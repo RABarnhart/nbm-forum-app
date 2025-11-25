@@ -20,10 +20,9 @@ export default function RootLayout() {
   return (
     <ThemeProvider  value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
-        {/* Ensure splash shows first */}
-        <Stack.Screen name="signin" />
+        {/* TODO: change back to splash */}
+        <Stack.Screen name="signup/index" />
       </Stack>
-      <StatusBar style="light" />
     </ThemeProvider>
   );
 }
