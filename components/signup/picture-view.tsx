@@ -5,7 +5,7 @@ import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 
 type Props = {
-  onNext:(nextStep:SignUpStep) => void
+  handleNext:(nextStep:SignUpStep) => void
 }
 type Inputs = {
   firstName: string;
@@ -13,7 +13,7 @@ type Inputs = {
   email: string;
 };
 
-const PictureView = ({onNext}: Props) => {
+const PictureView = ({handleNext}: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profilePicUri, setProfilePicUri] = useState('');
 

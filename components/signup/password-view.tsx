@@ -6,7 +6,7 @@ import { Colors } from '@/constants/theme'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 type Props = {
-  onNext:(nextStep:SignUpStep) => void
+  handleNext:(nextStep:SignUpStep) => void
 }
 type Inputs = {
   firstName: string;
@@ -14,7 +14,7 @@ type Inputs = {
   email: string;
 };
 
-const PasswordView = ({onNext}: Props) => {
+const PasswordView = ({handleNext}: Props) => {
     const {
         control,
         handleSubmit,
@@ -31,17 +31,17 @@ const PasswordView = ({onNext}: Props) => {
         // This is where you would send the data to your API
         console.log('Form Submitted:', data);
         // Alert.alert('Success', 'Account details submitted!');
-        onNext('Location');
+        handleNext('Location');
       };
 
   return (
-    <SafeAreaView>
+    <View>
       <Text>Password</Text>
       {/* --- Submission Button --- */}
       <Pressable style={styles.nextButton} onPress={handleSubmit(onSubmit)}>
         <Text style={{ color: 'white', fontSize: 16 }}>Next &rarr;</Text>
       </Pressable>
-    </SafeAreaView>
+    </View>
   )
 }
 

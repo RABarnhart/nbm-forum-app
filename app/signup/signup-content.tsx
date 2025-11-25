@@ -8,7 +8,12 @@ import PasswordView from '@/components/signup/password-view'
 import PictureView from '@/components/signup/picture-view'
 import { SignUpStep, SignupSteps } from '.'
 
-type Props = {}
+type Props = {
+  currentStep: SignUpStep,
+  setCurrentStep: React.Dispatch<React.SetStateAction<SignUpStep>>
+  handleNext: () => void
+  handleBack: () => void
+}
 type Inputs = {
   firstName: string;
   lastName: string;
@@ -18,32 +23,19 @@ type Inputs = {
   password: string;
 };
 
-const SignupContent = () => {
-  const [currentStep, setCurrentStep] = useState<SignUpStep>('Details');
-
-  const handleNext = () => {
-    const currentIndex = SignupSteps.indexOf(currentStep);
-
-    if (currentIndex < SignupSteps.length - 1) {
-        const nextStep = SignupSteps[currentIndex + 1];
-        setCurrentStep(nextStep);
-      } else {
-        console.log('Signup process complete!');
-        router.replace('/welcome'); 
-      }
-  }
+const SignupContent = ({currentStep, setCurrentStep, handleNext, handleBack}: Props) => {
 
     const renderCurrentView = () => {
       console.log(`Current step is ${currentStep}`);
       switch (currentStep) {
         case 'Details':
-          return <DetailsView onNext={handleNext} />;
+          return <DetailsView handleNext={handleNext} />;
         case 'Location':
-          return <LocationView onNext={handleNext} />;
+          return <LocationView handleNext={handleNext} />;
         case 'Password':
-          return <PasswordView onNext={handleNext} />;
+          return <PasswordView handleNext={handleNext} />;
         case 'Picture':
-          return <PictureView onNext={handleNext} />;
+          return <PictureView handleNext={handleNext} />;
       }
     }
 

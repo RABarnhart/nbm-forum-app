@@ -10,24 +10,22 @@ type Props = {
 const SignupProgressBar = ({
     currentStepIndex,
     length = 4,
-}: Props) => {
+  }: Props) => {
 
   return (
     <View style={{flexDirection: 'row', marginHorizontal: 30}}>
-{Array.from({ length }).map((_, index) =>  {
-
-    return <View
-    key={index}
-    style={{
-      flex: 1,
-      height: 8,
-      marginHorizontal: 5,
-      backgroundColor: currentStepIndex>=index ? Colors.main : Colors.grey,
-    }}
-  />
-}
-  
-)}
+      {Array.from({ length }).map((_, index) =>  {
+        return <View
+        key={index}
+        style={{
+          flex: 1,
+          height: 8,
+          marginHorizontal: 5,
+          backgroundColor: currentStepIndex>=index ? Colors.main : Colors.grey,
+        }}
+        />
+      }
+    )}
     </View>
   )
 }

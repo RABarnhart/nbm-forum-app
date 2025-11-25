@@ -7,7 +7,7 @@ import { router } from 'expo-router'
 import { SignUpStep } from '@/app/signup'
 
 type Props = {
-  onNext:(nextStep:SignUpStep) => void
+  handleNext:(nextStep:SignUpStep) => void
 }
 type Inputs = {
   firstName: string;
@@ -15,7 +15,7 @@ type Inputs = {
   email: string;
 };
 
-const DetailsView = ({onNext}: Props) => {
+const DetailsView = ({handleNext}: Props) => {
   const {
       control,
       handleSubmit,
@@ -32,7 +32,7 @@ const DetailsView = ({onNext}: Props) => {
       // This is where you would send the data to your API
       console.log('Form Submitted:', data);
       // Alert.alert('Success', 'Account details submitted!');
-      onNext('Location');
+      handleNext('Location');
     };
   
 
@@ -144,24 +144,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.grey,
     padding: 10,
-  },
-  passwordInputContainer:{
-    marginVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    alignItems: 'center',
-    position: 'absolute',
-    right: 10,
-    padding: 10,
-  },
-  errorBox: {
-    backgroundColor: Colors.errorPink,
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 5,
-    marginBottom: 10,
   },
   nextButton: {
     backgroundColor: Colors.main,
