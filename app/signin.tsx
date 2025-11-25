@@ -2,10 +2,10 @@ import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Form } from 'react-hook-form';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
+import Icon from 'react-native-vector-icons/Feather';
 
 type Props = {}
 
@@ -47,13 +47,36 @@ const signin = (props: Props) => {
           value={email}>
         </TextInput>
         <Text style={styles.inputHeader}>Password</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Enter your password"
-          secureTextEntry={!isPasswordVisible}>
-        </TextInput>
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            style={styles.input}
+            onChangeText={setPassword}
+            value={password}
+            placeholder="Enter your password"
+            secureTextEntry={!isPasswordVisible}>
+          </TextInput>
+          <TouchableOpacity
+            style={styles.iconContainer}
+            onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
+          <Icon
+            name={isPasswordVisible ? 'eye-off' : 'eye'} 
+            size={24}
+            color={Colors.border} 
+            />
+          </TouchableOpacity>
+        </View>
+        <Pressable onPress={() => {/*router.replace("/forgot-password")*/}} style={{ alignSelf: 'flex-end' }}>
+          <Text style={{ color: Colors.main, fontSize: 14, fontFamily: 'Syne_400Regular' }}>Forgot your password?</Text>
+        </Pressable>
+        <Pressable style={styles.signInButton} onPress={() => {router.replace("/")}}>
+          <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Syne_400Regular' }}>Log In &rarr;</Text>
+        </Pressable>
+        <View style={styles.footer}>
+          <Text style={{ color: Colors.main, fontFamily: 'Syne_400Regular', fontSize: 14 }}>Don't have an account? </Text>
+          <Pressable onPress={() => {router.replace("/signup")}}>
+            <Text style={{ color: Colors.main, fontSize: 14, fontFamily: 'Syne_400Regular', textDecorationLine: 'underline' }}>Create one here.</Text>
+          </Pressable>
+        </View>
       </View>
                 
     </SafeAreaView>
@@ -65,7 +88,7 @@ export default signin
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '40%',
+    flex: 1,
     padding: 35,
   },
   header: {
@@ -99,8 +122,31 @@ const styles = StyleSheet.create({
   },
     input: {
     height: 50,
+    width: '100%',
     borderWidth: 1,
     borderColor: Colors.border,
     padding: 10,
   },
+  passwordInputContainer:{
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+    iconContainer: {
+    alignItems: 'center',
+    position: 'absolute',
+    right: 10,
+    padding: 10,
+  },
+    signInButton: {
+    backgroundColor: Colors.main,
+    paddingVertical: 15,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  footer: {
+    marginTop: 'auto',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  }
 });
