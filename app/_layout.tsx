@@ -21,7 +21,7 @@ export default function RootLayout() {
     <ThemeProvider  value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
         {/* Ensure splash shows first */}
-        <Stack.Screen name="splash" />
+        <Stack.Screen name="signin" />
       </Stack>
       <StatusBar style="light" />
     </ThemeProvider>

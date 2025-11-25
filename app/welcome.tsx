@@ -30,7 +30,7 @@ export default function Welcome() {
           <Pressable style={styles.signUpButton} onPress={() => {router.replace("/signup")}}>
             <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Syne_400Regular' }}>Create an Account &rarr;</Text>
           </Pressable>
-          <Pressable style={styles.signInButton} onPress={() => {router.replace("/signup")}}>
+          <Pressable style={styles.signInButton} onPress={() => {router.replace("/signin")}}>
             <Text style={{ color: Colors.main, fontSize: 16, fontFamily: 'Syne_400Regular' }}>Sign In &rarr;</Text>
           </Pressable>
         </View>
