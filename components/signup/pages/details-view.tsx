@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/theme'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import ErrorBox from '../error-box'
+import ErrorBox from '../../error-box'
 import { router } from 'expo-router'
 import { SignUpStep } from '@/app/signup'
 

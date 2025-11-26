@@ -58,7 +58,6 @@ const SignupLayout = (props: Props) => {
         </View>
       </View>
       
-
       {/* --- Progress Bar --- */}
       <SignupProgressBar currentStepIndex={
          SignupSteps.indexOf(currentStep)} />

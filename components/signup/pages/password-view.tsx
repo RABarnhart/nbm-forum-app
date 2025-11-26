@@ -1,12 +1,12 @@
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
 import { SignUpStep } from '@/app/signup'
 import { Colors } from '@/constants/theme'
+import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import PasswordConditions from './password-conditions'
-import ErrorBox from '../error-box'
-import PasswordInput from './password-input'
-import TermsCheckbox from './terms-checkbox'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import ErrorBox from '../../error-box'
+import PasswordConditions from '../password-conditions'
+import PasswordInput from '../password-input'
+import TermsCheckbox from '../terms-checkbox'
 
 type Props = {
   handleNext:(nextStep:SignUpStep) => void

@@ -26,7 +26,8 @@ export const Colors = {
     tabIconSelected: tintColorDark,
   },
   main: '#624ff0',
-  grey: '#9BA1A6',
+  darkGrey: '#5b5b5b',
+  grey: '#a5a5a5',
   lightGrey: '#e6e6e6',
   errorPink: '#fcd0c9',
   errorRed: '#ff0000'

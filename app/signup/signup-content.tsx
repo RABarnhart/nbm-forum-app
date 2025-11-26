@@ -1,12 +1,10 @@
-import { Colors } from '@/constants/theme'
-import { router } from 'expo-router'
-import React, { useState } from 'react'
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
-import LocationView from '@/components/signup/location-view'
-import DetailsView from '@/components/signup/details-view'
-import PasswordView from '@/components/signup/password-view'
-import PictureView from '@/components/signup/picture-view'
-import { SignUpStep, SignupSteps } from '.'
+import DetailsView from '@/components/signup/pages/details-view'
+import LocationView from '@/components/signup/pages/location-view'
+import PasswordView from '@/components/signup/pages/password-view'
+import PictureView from '@/components/signup/pages/picture-view'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { SignUpStep } from '.'
 
 type Props = {
   currentStep: SignUpStep,
@@ -29,7 +27,8 @@ const SignupContent = ({currentStep, setCurrentStep, handleNext, handleBack}: Pr
       console.log(`Current step is ${currentStep}`);
       switch (currentStep) {
         case 'Details':
-          return <DetailsView handleNext={handleNext} />;
+          // TODO: change back to Detail view
+          return <PictureView handleNext={handleNext} />;
         case 'Location':
           return <LocationView handleNext={handleNext} />;
         case 'Password':
