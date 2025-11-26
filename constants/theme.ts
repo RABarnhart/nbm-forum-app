@@ -27,6 +27,7 @@ export const Colors = {
   },
   main: '#624ff0',
   grey: '#9BA1A6',
+  lightGrey: '#e6e6e6',
   errorPink: '#fcd0c9',
   errorRed: '#ff0000'
 };
