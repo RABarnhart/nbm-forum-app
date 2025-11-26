@@ -29,15 +29,14 @@ const DetailsView = ({handleNext}: Props) => {
     });
   
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-      // This is where you would send the data to your API
-      console.log('Form Submitted:', data);
-      // Alert.alert('Success', 'Account details submitted!');
+      // Send data out
+      console.log('Details captured:', data);
       handleNext('Location');
     };
   
 
   return (
-    <View>
+    <View style={{height: '100%'}}>
       <Text style={styles.heading}>Create your Account</Text>
       <Text style={styles.subtitle}>Enter your details below to start creating your brand new account.</Text>
 

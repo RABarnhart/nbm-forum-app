@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { SignUpStep } from '@/app/signup';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/theme';
 
 type Props = {
@@ -16,14 +15,8 @@ type Inputs = {
 const LocationView = ({handleNext}: Props) => {
   const [address, setAddress] = useState('');
 
-  const handleNextPress = () => {
-      // You can add validation logic here (e.g., check if address is not empty)
-      // if (!address.trim()) {
-      //     console.warn('Please enter an address.');
-      //     // Optionally show an error message
-      //     return; 
-      // }
-
+  const handleSubmit = () => {
+    // Send data out
       console.log('Location data captured:', address);
       handleNext('Password');
     }
@@ -43,7 +36,7 @@ const LocationView = ({handleNext}: Props) => {
       />
 
       {/* --- Submission Button --- */}
-      <Pressable style={styles.nextButton} onPress={handleNextPress}>
+      <Pressable style={styles.nextButton} onPress={handleSubmit}>
         <Text style={{ color: 'white', fontSize: 16 }}>Next &rarr;</Text>
       </Pressable>
     </View>

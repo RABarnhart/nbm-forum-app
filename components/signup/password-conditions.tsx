@@ -2,7 +2,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Colors } from '@/constants/theme'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ErrorBox from '../error-box';
 
 type Props = {}
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Control, Controller, FieldValues, Noop, ValidationRule } from 'react-hook-form'
 import Icon from 'react-native-vector-icons/Feather';

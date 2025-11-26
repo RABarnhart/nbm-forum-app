@@ -50,11 +50,14 @@ const SignupLayout = (props: Props) => {
         <Pressable onPress={handleBack}>
           <Text style={{ fontSize: 30 }}>←</Text>
         </Pressable>
+      </View>
+      <View style={styles.logo}>
         <Text style={styles.title}>NBM</Text>
         <View style={{transform: [{ scale: .5 }, { rotate: '90deg' },],}}>
           <IconRocket color={Colors.main} />
         </View>
       </View>
+      
 
       {/* --- Progress Bar --- */}
       <SignupProgressBar currentStepIndex={
@@ -82,9 +85,15 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
     title: {
-    marginLeft: 80, 
     fontFamily: 'Syne_700Bold', 
     fontSize: 25, 
     color: Colors.main
   },
+  logo: {
+    position: 'absolute',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    top: 45,
+  }
 })

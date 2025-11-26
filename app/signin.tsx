@@ -3,77 +3,97 @@ import ErrorBox from '@/components/error-box';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
-import Icon from 'react-native-vector-icons/Feather';
+import PasswordInput from '@/components/signup/password-input'; 
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-type Props = {}
+type Inputs = {
+  email: string;
+  signInPassword: string;
+};
 
-const signin = (props: Props) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+const SignIn = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: {
+      email: '',
+      signInPassword: ''
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log('Login Data:', data);
+    router.replace("/home");
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1,  }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="dark" backgroundColor="#ffffff" translucent={false} />
 
-      {/* --- Header Section --- */}
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Pressable onPress={() => {router.replace("/welcome")}}>
-            <Text style={{ fontSize: 30 }}>←</Text>
-          </Pressable>
-          <Text style={styles.title}>NBM</Text>
-          <View style={{transform: [{ scale: .5 }, { rotate: '90deg' },],}}>
-            <IconRocket color={Colors.main} />
-          </View>
+      {/* --- Title and Back Arrow --- */}
+      <View style={styles.header}>
+        <Pressable onPress={() => {router.replace("/welcome")}}>
+          <Text style={{ fontSize: 30 }}>←</Text>
+        </Pressable>
+      </View>
+      <View style={styles.logo}>
+        <Text style={styles.title}>NBM</Text>
+        <View style={{transform: [{ scale: .5 }, { rotate: '90deg' },],}}>
+          <IconRocket color={Colors.main} />
         </View>
+      </View>
 
+      <View style={styles.container}>
         <Text style={styles.heading}>Log In</Text>
         <Text style={styles.subtitle}>Enter your details to log into your account.</Text>
 
-        {/* --- Email --- */}
+        {/* --- Email Controller --- */}
         <Text style={styles.inputHeader}>Email</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          placeholder="you@email.com.au"
-          value={email}>
-        </TextInput>
-
-        {/* --- Password --- */}
-        <Text style={styles.inputHeader}>Password</Text>
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={styles.input}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Enter your password"
-            secureTextEntry={!isPasswordVisible}>
-          </TextInput>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-          <Icon
-            name={isPasswordVisible ? 'eye-off' : 'eye'} 
-            size={24}
-            color={Colors.grey} 
+        <Controller
+          control={control}
+          name="email"
+          rules={{ 
+            required: 'Email is required',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Invalid email address'
+            }
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+              placeholder="you@email.com.au"
+              keyboardType="email-address"
+              autoCapitalize="none"
             />
-          </TouchableOpacity>
-        </View>
+          )}
+        />
+        {errors.email && <ErrorBox message={errors.email.message} />}
+
+        {/* --- PasswordInput Component --- */}
+        <Text style={styles.inputHeader}>Password</Text>
+        <PasswordInput
+          control={control}
+          name="signInPassword" // The field name for the sign-in password
+          rules={{ required: 'Password is required' }}
+          placeholder={"Enter your password"}
+        />
+        {errors.signInPassword && <ErrorBox message={errors.signInPassword.message} />}
 
         <Pressable onPress={() => {/*router.replace("/forgot-password")*/}} style={{ alignSelf: 'flex-end' }}>
           <Text style={{ color: Colors.main, fontSize: 14, fontFamily: 'Syne_400Regular' }}>Forgot your password?</Text>
         </Pressable>
 
-        {/* --- Error Messages --- */}
-        <ErrorBox message={''/* Password and email do not match */} />
-
         {/* --- Submission Button --- */}
-        <Pressable style={styles.signInButton} onPress={() => {router.replace("/")}}>
+        <Pressable style={styles.signInButton} onPress={handleSubmit(onSubmit)}>
           <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Syne_400Regular' }}>Log In &rarr;</Text>
         </Pressable>
 
@@ -87,10 +107,10 @@ const signin = (props: Props) => {
       </View>
                 
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default signin
+export default SignIn
 
 const styles = StyleSheet.create({
   container: {
@@ -103,49 +123,45 @@ const styles = StyleSheet.create({
     fontSize: 24,
     alignItems: 'center',
     height: 50,
+    marginLeft: 30,
   },
   title: {
-    marginLeft: 80, 
     fontFamily: 'Syne_700Bold', 
     fontSize: 25, 
     color: Colors.main
   },
-    heading: {
+  logo: {
+    position: 'absolute',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+    top: 45,
+  },
+  heading: {
     fontFamily: 'Syne_700Bold',
     fontSize: 25,
     marginTop: 20,
     marginBottom: 12,
     width: '100%'
   },
-    subtitle: {
+  subtitle: {
     fontFamily: 'Syne_400Regular',
     fontSize: 16,
     marginBottom: 20,
   },
-    inputHeader: {
+  inputHeader: {
     fontFamily: 'Syne_700Bold',
     fontSize: 16,
     paddingVertical: 5,
   },
-    input: {
-    height: 50,
+  input: {
+    height: 55,
     width: '100%',
     borderWidth: 1,
     borderColor: Colors.grey,
     padding: 10,
   },
-  passwordInputContainer:{
-    marginVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-    iconContainer: {
-    alignItems: 'center',
-    position: 'absolute',
-    right: 10,
-    padding: 10,
-  },
-    signInButton: {
+  signInButton: {
     backgroundColor: Colors.main,
     paddingVertical: 15,
     alignItems: 'center',

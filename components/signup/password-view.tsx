@@ -1,8 +1,8 @@
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { SignUpStep } from '@/app/signup'
 import { Colors } from '@/constants/theme'
-import { Controller, FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import PasswordConditions from './password-conditions'
 import ErrorBox from '../error-box'
 import PasswordInput from './password-input'
@@ -35,9 +35,8 @@ const PasswordView = ({handleNext}: Props) => {
       });
     
       const onSubmit: SubmitHandler<Inputs> = (data) => {
-        // This is where you would send the data to your API
-        console.log('Form Submitted:', data);
-        // Alert.alert('Success', 'Account details submitted!');
+        // Send data out
+        console.log('Password captured:', data);
         handleNext('Picture');
       };
 
@@ -76,7 +75,6 @@ const PasswordView = ({handleNext}: Props) => {
         control={control}
         name="termsAndConditions"
         rules={{ 
-            // 🚨 CRITICAL RULE: Submission fails if the value is not true
             validate: (value: boolean) => value === true || 'You must agree to the terms and conditions to proceed.' 
         }}
         termsText="By ticking this box, I agree to the terms and conditions of NBM."
