@@ -12,7 +12,8 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { signIn } from '@/services/auth';
 import Loading from '@/components/loading';
-import { SignInPayload } from '@/types/api';
+import { SignInPayload, SignInResponse } from '@/types/api';
+import { getToken, saveToken } from '@/services/token';
 
 type Inputs = {
   email: string;
@@ -41,9 +42,13 @@ const SignIn = () => {
 
   const signInMutation = useMutation({
     mutationFn: signIn,
-    onSuccess: (data: any) => {
+    onSuccess: async (data: any) => {
       // Navigate on success
-      console.log("Sign in:", data);
+      console.log("Sign in successful!", data);
+      if (data.accessToken)
+        {
+          await saveToken(data.accessToken);
+        } 
       router.replace('/home'); 
     },
     onError: (error: any) => {
