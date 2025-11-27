@@ -14,7 +14,11 @@ type Inputs = {
   firstName: string;
   lastName: string;
   email: string;
+  telephone: string;
 };
+
+const EMAIL_REGEX = /^\S+@\S+$/i;
+const PHONE_NUMBER_REGEX = /^(\(\d{3}\)|\d{3})[-\s]?\d{3}[-\s]?\d{4}$/;
 
 const DetailsView = ({ onStepComplete, handleNext }: Props) => {
   const {
@@ -26,12 +30,23 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
         firstName: '',
         lastName: '',
         email: '',
+        telephone: '',
       },
     });
+
+  const formatPhoneNumber = (rawPhoneNumber: string): string => {
+    return rawPhoneNumber.replace(/\D/g, '');
+  };
   
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-      onStepComplete(data);
-      console.log('Details captured:', data);
+      // format phone number
+      const cleanedData = {
+        ...data,
+        telephone: formatPhoneNumber(data.telephone),
+      };
+
+      onStepComplete(cleanedData);
+      console.log('Details captured:', cleanedData);
       handleNext('Location');
     };
 
@@ -78,7 +93,26 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
       <Controller
         control={control}
         name="email"
-        rules={{ required: 'Oops! It looks like you have not entered an email. This is a required step.', pattern: /^\S+@\S+$/i }}
+        rules={{ required: 'Oops! It looks like you have not entered an email. This is a required step.', pattern: EMAIL_REGEX }}
+        render={({ field: { onChange, onBlur, value }, fieldState:{error} }) => (
+          <TextInput
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            placeholder="you@email.com.au"
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        )}
+      />
+
+      {/* Telephone */}
+      <Text style={styles.inputHeader}>Phone number</Text>
+      <Controller
+        control={control}
+        name="telephone"
+        rules={{ required: 'Oops! please enter a phone number', pattern: PHONE_NUMBER_REGEX }}
         render={({ field: { onChange, onBlur, value }, fieldState:{error} }) => (
           <TextInput
             style={styles.input}
@@ -98,6 +132,10 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
       <ErrorBox message={
             errors.email?.type === 'pattern' 
               ? 'Invalid email format'
+              : errors.email?.message} />
+      <ErrorBox message={
+            errors.telephone?.type === 'pattern' 
+              ? 'Invalid phone number format'
               : errors.email?.message} />
 
       {/* --- Submission Button --- */}

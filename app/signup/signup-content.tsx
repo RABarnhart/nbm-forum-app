@@ -22,6 +22,7 @@ type FormData = {
     firstName: string; 
     lastName: string; 
     email: string;
+    telephone: string;
   };
   address: { 
       street: string;
@@ -109,16 +110,12 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
     },
     onError: (error: any) => {
       console.error("Signup failed:", error);
-      let errorMessage = "Registration Failed. Please try again later.";
-      
       if (axios.isAxiosError(error) && error.response) {
         // 409: Conflict
         if (error.response.status === 409) {
-          errorMessage = "This account already exists with this email or phone number. Did you mean to log in?";
-          Alert.alert("Registration Failed", errorMessage);
-        }
-        if (error.response.data && error.response.data.message) {
-          errorMessage = error.response.data.message;
+          Alert.alert("Registration Failed", "This account already exists with this email or phone number. Did you mean to log in?");
+        } else {
+          Alert.alert("Registration Failed", error.response.data.message);
         }
       }
     },
@@ -133,9 +130,7 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
     };
 
     const finalPayload = {
-      ...signupData.details, 
-      // TODO: Phone number can cause 409 conflicts
-      telephone: "0411111111",
+      ...signupData.details,
       password: signupData.password.password,
       confirmPassword: signupData.password.confirmPassword,
       avatar: pictureData.imageUri || null, 

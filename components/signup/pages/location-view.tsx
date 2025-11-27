@@ -26,7 +26,7 @@ type Inputs = {
 
 const LocationView = ({ onStepComplete, handleNext }: Props) => {
   const [addressData, setAddressData] = useState<Inputs>({
-    street: "", 
+    street: "123 Computer st", 
     number: "0", 
     city: "Brisbane",
     state: "Default State", 
@@ -64,7 +64,8 @@ const LocationView = ({ onStepComplete, handleNext }: Props) => {
       {/* --- Address Input --- */}
       <TextInput
         style={styles.input}
-        onChangeText={(text) => updateAddressField('street', text)}
+        // TODO: replace with Google API
+        onChangeText={() => {}/*(text) => updateAddressField('street', text)*/}
         value={addressData.street}
         placeholder="Start typing..."
       />

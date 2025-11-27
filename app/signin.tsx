@@ -13,12 +13,14 @@ import axios from 'axios';
 import { signIn } from '@/services/auth';
 import Loading from '@/components/loading';
 import { SignInPayload, SignInResponse } from '@/types/api';
-import { getToken, saveToken } from '@/services/token';
+import { saveToken } from '@/services/token';
 
 type Inputs = {
   email: string;
   password: string;
 };
+
+const EMAIL_REGEX = /^\S+@\S+$/i;
 
 const SignIn = () => {
   const {
@@ -33,18 +35,14 @@ const SignIn = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: SignInPayload) => {
-
-    const loginPayload = data;
-    console.log('Login Data:', loginPayload);
-
-    signInMutation.mutate(loginPayload);
+    signInMutation.mutate(data);
   };
 
   const signInMutation = useMutation({
     mutationFn: signIn,
     onSuccess: async (data: any) => {
       // Navigate on success
-      console.log("Sign in successful!", data);
+      console.log("Sign in successful!");
       if (data.accessToken)
         {
           await saveToken(data.accessToken);
@@ -52,20 +50,14 @@ const SignIn = () => {
       router.replace('/home'); 
     },
     onError: (error: any) => {
-      let errorMessage = "Sign in failed. Please try again later.";
-      
       if (axios.isAxiosError(error) && error.response) {
         // Can check for specific error codes
         if (error.response.status === 404) {
-          errorMessage = "Email or password are incorrect";
-          Alert.alert("Sign in Failed", errorMessage);
+          Alert.alert("Sign in Failed", "Account not found");
+        } else if (error.response.data.message === "Password does not meet") {
+          Alert.alert("Sign in Failed", "Incorrect password")
         } else {
-          Alert.alert("Sign in Failed", "Unknown error")
-        }
-
-        if (error.response.data && error.response.data.message) {
-          errorMessage = error.response.data.message;
-          console.error("Sign in failed:", errorMessage);
+          Alert.alert("Sign in Failed", error.response.data.message)
         }
       }
     },
@@ -101,7 +93,7 @@ const SignIn = () => {
           rules={{ 
             required: 'Email is required',
             pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              value: EMAIL_REGEX,
               message: 'Invalid email address'
             }
           }}
