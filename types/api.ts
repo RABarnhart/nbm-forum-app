@@ -1,4 +1,4 @@
-
+/* --- Payloads --- */
 export type RegisterPayload = {
     firstName: string;
     lastName: string;
@@ -24,3 +24,32 @@ export type RegisterPayload = {
         postcode: string;
     };
 };
+
+export type SignInPayload = {
+    email: string;
+    password: string;
+}
+
+/* --- Responses --- */
+export type RegisterResponse = {
+    statusCode: number;
+    timeStamp: string;
+    method: string;
+    message: string;
+    data: {
+        message: string[];
+        error: string;
+        statusCode: number;
+    }
+};
+
+export type SignInResponse = {
+    accessToken: string;
+    user: {
+        id: number;
+        email: string;
+        firstname: string;
+        lastname: string;
+        telephone: string;
+    }
+}

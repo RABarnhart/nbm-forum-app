@@ -4,14 +4,19 @@ import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PasswordInput from '@/components/signup/password-input'; 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import { signIn } from '@/services/auth';
+import Loading from '@/components/loading';
+import { SignInPayload } from '@/types/api';
 
 type Inputs = {
   email: string;
-  signInPassword: string;
+  password: string;
 };
 
 const SignIn = () => {
@@ -22,18 +27,49 @@ const SignIn = () => {
   } = useForm<Inputs>({
     defaultValues: {
       email: '',
-      signInPassword: ''
+      password: ''
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('Login Data:', data);
-    router.replace("/loading");
+  const onSubmit: SubmitHandler<Inputs> = async (data: SignInPayload) => {
+
+    const loginPayload = data;
+    console.log('Login Data:', loginPayload);
+
+    signInMutation.mutate(loginPayload);
   };
+
+  const signInMutation = useMutation({
+    mutationFn: signIn,
+    onSuccess: (data: any) => {
+      // Navigate on success
+      console.log("Sign in:", data);
+      router.replace('/home'); 
+    },
+    onError: (error: any) => {
+      let errorMessage = "Sign in failed. Please try again later.";
+      
+      if (axios.isAxiosError(error) && error.response) {
+        // Can check for specific error codes
+        if (error.response.status === 404) {
+          errorMessage = "Email or password are incorrect";
+          Alert.alert("Sign in Failed", errorMessage);
+        } else {
+          Alert.alert("Sign in Failed", "Unknown error")
+        }
+
+        if (error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+          console.error("Sign in failed:", errorMessage);
+        }
+      }
+    },
+  });
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style="dark" backgroundColor="#ffffff" translucent={false} />
+      {signInMutation.isPending && (<Loading />)}
+      <StatusBar style="dark" backgroundColor="white" translucent={false} />
 
       {/* --- Title and Back Arrow --- */}
       <View style={styles.header}>
@@ -82,11 +118,11 @@ const SignIn = () => {
         <Text style={styles.inputHeader}>Password</Text>
         <PasswordInput
           control={control}
-          name="signInPassword" // The field name for the sign-in password
+          name="password" // The field name for the sign-in password
           rules={{ required: 'Password is required' }}
           placeholder={"Enter your password"}
         />
-        {errors.signInPassword && <ErrorBox message={errors.signInPassword.message} />}
+        {errors.password && <ErrorBox message={errors.password.message} />}
 
         <Pressable onPress={() => {/*router.replace("/forgot-password")*/}} style={{ alignSelf: 'flex-end' }}>
           <Text style={{ color: Colors.main, fontSize: 14, fontFamily: 'Syne_400Regular' }}>Forgot your password?</Text>

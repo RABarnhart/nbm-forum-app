@@ -114,14 +114,13 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
       if (axios.isAxiosError(error) && error.response) {
         // 409: Conflict
         if (error.response.status === 409) {
-          errorMessage = "This account already exists. Did you mean to log in?";
+          errorMessage = "This account already exists with this email or phone number. Did you mean to log in?";
+          Alert.alert("Registration Failed", errorMessage);
         }
         if (error.response.data && error.response.data.message) {
           errorMessage = error.response.data.message;
         }
       }
-
-    Alert.alert("Registration Failed", errorMessage);
     },
   });
 
