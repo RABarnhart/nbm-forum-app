@@ -6,6 +6,11 @@ import React from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { SignUpStep, SignupSteps } from '.'
 import { router } from 'expo-router'
+import { useMutation } from '@tanstack/react-query';
+import { registerUser } from '@/services/auth';
+import { RegisterPayload } from '@/types/api'
+import axios from 'axios';
+import Loading from '@/components/loading'
 
 type Props = {
   currentStep: SignUpStep,
@@ -95,44 +100,61 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
       }
     }
 
-  {/* --- Form Submission --- */}
+  const registerMutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (data: any) => {
+      // Navigate on success
+      console.log("Registration Successful:", data);
+      router.replace('/home'); 
+    },
+    onError: (error: any) => {
+      console.error("Signup failed:", error);
+      let errorMessage = "Registration Failed. Please try again later.";
+      
+      if (axios.isAxiosError(error) && error.response) {
+        // 409: Conflict
+        if (error.response.status === 409) {
+          errorMessage = "This account already exists. Did you mean to log in?";
+        }
+        if (error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      }
+
+    Alert.alert("Registration Failed", errorMessage);
+    },
+  });
+
+  {/* --- Form Submission / Registration API call --- */}
   const handleFormSubmission = async (pictureData: FormData['picture']) => { 
     
-    updateSignupData('picture', pictureData);
+    const finalDataSnapshot: FormData = { 
+      ...signupData, 
+      picture: pictureData
+    };
 
     const finalPayload = {
       ...signupData.details, 
-      telephone: "0400000000",
+      // TODO: Phone number can cause 409 conflicts
+      telephone: "0411111111",
       password: signupData.password.password,
       confirmPassword: signupData.password.confirmPassword,
       avatar: pictureData.imageUri || null, 
       address: signupData.address, 
-    };
+    } as RegisterPayload;
     
     console.log('Final Payload:', finalPayload);
     
-    // ----------------------------------------------------
-    // API CALL IMPLEMENTATION
-    // ----------------------------------------------------
-    
-    try {
-      // Replace with your actual API endpoint
-      // const response = await axios.post('YOUR_API_ENDPOINT_HERE', finalPayload); 
-      // console.log("Account Created!", response.data);
-      
-      // Navigate on success
-      router.replace('/loading'); 
-      
-    } catch (error) {
-      console.error("Signup failed:", error);
-      Alert.alert("Sign up failed");
-    }
+    registerMutation.mutate(finalPayload);
   };
 
   return (
+    <>
+      {registerMutation.isPending && (<Loading />)}
       <View style={styles.container}>
         {renderCurrentView()}
       </View>
+    </>
   );
 }
 

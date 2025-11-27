@@ -1,7 +1,5 @@
 import { Colors } from '@/constants/theme';
-import { router } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from "react-native-svg";
 
@@ -9,18 +7,8 @@ import Svg, { Path } from "react-native-svg";
 type Props = {}
 
 export default function Loading({  }: Props) {
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      router.replace("/home");
-    }, 1500); // duration of splash
-
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
-    <>
-      <StatusBar style="light" />
-      <View style={styles.container}>
+      <View style={styles.loading}>
         <Svg
         width={120}
         height={179}
@@ -33,13 +21,16 @@ export default function Loading({  }: Props) {
         />
       </Svg>
       </View>
-    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  loading: {
+    position: 'absolute',
+    marginTop: 50,
+    zIndex: 1,
+    height: '100%',
+    width: '100%',
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
