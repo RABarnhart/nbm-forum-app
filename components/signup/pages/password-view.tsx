@@ -9,17 +9,19 @@ import PasswordInput from '../password-input'
 import TermsCheckbox from '../terms-checkbox'
 
 type Props = {
-  handleNext:(nextStep:SignUpStep) => void
+  onStepComplete: (data: Inputs) => void
+  handleNext: (nextStep: SignUpStep) => void
 }
+
 type Inputs = {
-  firstPassword: string;
-  secondPassword: string;
+  password: string;
+  confirmPassword: string;
   termsAndConditions: boolean;
 };
 
 const PASSWORD_REGEX = /^(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
-const PasswordView = ({handleNext}: Props) => {
+const PasswordView = ({ onStepComplete, handleNext }: Props) => {
     const {
         control,
         handleSubmit,
@@ -28,14 +30,14 @@ const PasswordView = ({handleNext}: Props) => {
         watch
       } = useForm({
         defaultValues: {
-          firstPassword: '',
-          secondPassword: '',
+          password: '',
+          confirmPassword: '',
           termsAndConditions: false
         },
       });
     
       const onSubmit: SubmitHandler<Inputs> = (data) => {
-        // Send data out
+        onStepComplete(data);
         console.log('Password captured:', data);
         handleNext('Picture');
       };
@@ -49,7 +51,7 @@ const PasswordView = ({handleNext}: Props) => {
       <Text style={styles.inputHeader}>Create a Password</Text>
       <PasswordInput 
         control={control}
-        name="firstPassword"
+        name="password"
         rules={{ 
             required: 'Please enter a password',
             pattern: PASSWORD_REGEX, 
@@ -60,11 +62,11 @@ const PasswordView = ({handleNext}: Props) => {
       <Text style={styles.inputHeader}>Confirm Password</Text>
       <PasswordInput
         control={control}
-        name="secondPassword"
+        name="confirmPassword"
         rules={{ 
             required: 'Please confirm your password',
             validate: (value) => 
-                value === getValues('firstPassword') || 'Passwords do not match',
+                value === getValues('password') || 'Passwords do not match',
         }}
         placeholder={"Re-enter your password"}/>
 
@@ -85,34 +87,34 @@ const PasswordView = ({handleNext}: Props) => {
           <ErrorBox message={errors.termsAndConditions.message} />
       )}
 
-      {errors.firstPassword?.type === 'required' && (
-        <ErrorBox message={errors.firstPassword.message} />
+      {errors.password?.type === 'required' && (
+        <ErrorBox message={errors.password.message} />
       )}
 
-      {errors.firstPassword?.type === 'pattern' && (
+      {errors.password?.type === 'pattern' && (
         <View>
           {/* No Number */}
-          {!/(?=.*[0-9])/.test(watch('firstPassword')) && (
+          {!/(?=.*[0-9])/.test(watch('password')) && (
             <ErrorBox message="Password must include at least one number" />
           )}
           {/* No Symbol */}
-          {!/(?=.*[^A-Za-z0-9])/.test(watch('firstPassword')) && (
+          {!/(?=.*[^A-Za-z0-9])/.test(watch('password')) && (
             <ErrorBox message="Password must include at least one symbol" />
           )}
           {/* No Lowercase */}
-          {!/(?=.*[a-z])/.test(watch('firstPassword')) && (
+          {!/(?=.*[a-z])/.test(watch('password')) && (
             <ErrorBox message="Password must include at least one lowercase letter" />
           )}
           {/* No Uppercase */}
-          {!/(?=.*[A-Z])/.test(watch('firstPassword')) && (
+          {!/(?=.*[A-Z])/.test(watch('password')) && (
             <ErrorBox message="Password must include at least one uppercase letter" />
           )}
         </View>
       )}
 
       {/* 3. Second Password: Match Error */}
-      {errors.secondPassword && (
-          <ErrorBox message={errors.secondPassword.message} />
+      {errors.confirmPassword && (
+          <ErrorBox message={errors.confirmPassword.message} />
       )}
 
       {/* --- Submission Button --- */}

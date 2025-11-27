@@ -1,27 +1,36 @@
 import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
-import { SignUpStep } from '@/app/signup';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import PhotoPicker from '../photo-picker';
 import * as ImagePicker from 'expo-image-picker';
 
 type Props = {
-  handleNext:(nextStep:SignUpStep) => void
+  onStepComplete: (data: Inputs) => Promise<void>
 }
-type Inputs = {
-  firstName: string;
-  lastName: string;
-  email: string;
-};
 
-const PictureView = ({handleNext}: Props) => {
-    const handleProfileCreation = () => {
-    router.replace('/home');
-  };
-  const handleSkip = () => {
-    router.replace('/home');
-  };
+type Inputs = {
+  imageUri: string | undefined;
+}
+
+const PictureView = ({ onStepComplete }: Props) => {
+  const handleProfileCreation = async () => {
+        const data: Inputs = {
+          imageUri: image
+        };
+
+        await onStepComplete(data); 
+
+        // Note: The parent component is responsible for final navigation (router.replace('/welcome'))
+    };
+    
+    const handleSkip = () => {
+        // Pass up null data for the picture
+        onStepComplete({ imageUri: undefined });
+        
+        // Since skipping is also the final action, let it trigger the submission, too.
+        // We'll trust the parent to navigate after submission finishes.
+    };
   
   const [isImageSelected, setisImageSelected] = useState(false)
   const [image, setImage] = useState<string | undefined>(undefined);
@@ -36,7 +45,7 @@ const PictureView = ({handleNext}: Props) => {
     }
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images', 'videos'],
+      mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,

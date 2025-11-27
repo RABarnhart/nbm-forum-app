@@ -4,20 +4,54 @@ import { SignUpStep } from '@/app/signup';
 import { Colors } from '@/constants/theme';
 
 type Props = {
+  onStepComplete: (data: Inputs) => void;
   handleNext:(nextStep:SignUpStep) => void
 }
 type Inputs = {
-  firstName: string;
-  lastName: string;
-  email: string;
+  street: string;
+  number: string; 
+  city: string;
+  state: string;
+  postalCode: string;
+  fullAddress: string;
+  streetName: string;
+  streetNumber: string;
+  googlePlaceId: string;
+  lng: number;
+  lat: number;
+  country: string; 
+  suburb: string;
+  postcode: string;
 };
 
-const LocationView = ({handleNext}: Props) => {
-  const [address, setAddress] = useState('');
+const LocationView = ({ onStepComplete, handleNext }: Props) => {
+  const [addressData, setAddressData] = useState<Inputs>({
+    street: "", 
+    number: "0", 
+    city: "Brisbane",
+    state: "Default State", 
+    postalCode: "4000",
+    fullAddress: "Unknown Address",
+    streetName: "Default Street Name",
+    streetNumber: "0",
+    googlePlaceId: "default_id",
+    lng: 0,
+    lat: 0,
+    country: "Australia", 
+    suburb: "Default Suburb",
+    postcode: "0000"
+  });
+  
+  const updateAddressField = (field: keyof Inputs, value: string | number) => {
+    setAddressData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   const handleSubmit = () => {
-    // Send data out
-      console.log('Location data captured:', address);
+      onStepComplete({...addressData});
+      console.log('Location data captured:', addressData.street);
       handleNext('Password');
     }
 
@@ -30,8 +64,8 @@ const LocationView = ({handleNext}: Props) => {
       {/* --- Address Input --- */}
       <TextInput
         style={styles.input}
-        onChangeText={setAddress}
-        value={address}
+        onChangeText={(text) => updateAddressField('street', text)}
+        value={addressData.street}
         placeholder="Start typing..."
       />
 

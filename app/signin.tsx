@@ -28,7 +28,7 @@ const SignIn = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log('Login Data:', data);
-    router.replace("/home");
+    router.replace("/loading");
   };
 
   return (

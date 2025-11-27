@@ -17,18 +17,6 @@ export const SignupSteps: SignUpStep[] = ['Details', 'Location', 'Password', 'Pi
 const SignupLayout = (props: Props) => {
     const [currentStep, setCurrentStep] = useState<SignUpStep>('Details')
 
-    const handleNext = () => {
-      const currentIndex = SignupSteps.indexOf(currentStep);
-
-      if (currentIndex < SignupSteps.length - 1) {
-          const nextStep = SignupSteps[currentIndex + 1];
-          setCurrentStep(nextStep);
-        } else {
-          console.log('Signup process complete!');
-          router.replace('/welcome'); 
-        }
-    };
-
     const handleBack = () => {
         const currentIndex = SignupSteps.indexOf(currentStep);
 
@@ -63,10 +51,8 @@ const SignupLayout = (props: Props) => {
          SignupSteps.indexOf(currentStep)} />
 
       {/* --- Current Page Contents --- */}
-      <SignupContent currentStep={currentStep}
-                    setCurrentStep={setCurrentStep}
-                    handleNext={handleNext}
-                    handleBack={handleBack} />
+      <SignupContent currentStep={currentStep} setCurrentStep={setCurrentStep}/>
+
       </SafeAreaView>
     </View>
   )

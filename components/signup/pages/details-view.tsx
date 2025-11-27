@@ -7,7 +7,8 @@ import { router } from 'expo-router'
 import { SignUpStep } from '@/app/signup'
 
 type Props = {
-  handleNext:(nextStep:SignUpStep) => void
+  onStepComplete: (data: Inputs) => void;
+  handleNext: (nextStep:SignUpStep) => void;
 }
 type Inputs = {
   firstName: string;
@@ -15,7 +16,7 @@ type Inputs = {
   email: string;
 };
 
-const DetailsView = ({handleNext}: Props) => {
+const DetailsView = ({ onStepComplete, handleNext }: Props) => {
   const {
       control,
       handleSubmit,
@@ -29,11 +30,10 @@ const DetailsView = ({handleNext}: Props) => {
     });
   
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-      // Send data out
+      onStepComplete(data);
       console.log('Details captured:', data);
       handleNext('Location');
     };
-  
 
   return (
     <View style={{height: '100%'}}>
