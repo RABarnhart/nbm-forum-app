@@ -80,3 +80,8 @@ export type SignInResponse = {
 }
 
 export type PostResponse = PostType[];
+
+export type PaginatedPostsResponse = {
+    data: PostResponse; // Assuming PostResponse is the array type: PostType[]
+    total: number; 
+};

@@ -13,13 +13,17 @@ const Post = ({ data }: Props) => {
     <View style={styles.container}>
       {/* --- Author and Date --- */}
       <View style={{flexDirection: 'row', marginTop: 15}}>
-        <Text style={{fontFamily: 'Syne_700Bold', fontSize: 18, color: Colors.darkGrey}}>{data.user.firstName} {data.user.lastName}</Text>
+        <Text style={{fontFamily: 'Syne_700Bold', fontSize: 18, color: Colors.darkGrey}}>
+          {data.user.firstName} {data.user.lastName}
+        </Text>
         <Icon 
         name="circle-medium" 
         size={15} 
         color={Colors.main} 
         style={{alignSelf: 'center', marginHorizontal: 5}} />
-        <Text style={{fontFamily: 'Syne_400Regular', fontSize: 18, color: Colors.darkGrey}}>{data.createdAt}</Text>
+        <Text style={{fontFamily: 'Syne_400Regular', fontSize: 18, color: Colors.darkGrey}}>
+          {data.createdAt.slice(0, 10)}
+        </Text>
       </View>
 
       {/* --- Title --- */}

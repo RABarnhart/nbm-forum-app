@@ -1,16 +1,26 @@
 import axios from 'axios';
-import { PostSearchPayload } from '@/types/api';
+import { PostSearchPayload, PaginatedPostsResponse } from '@/types/api';
 import { getToken } from './token'; 
 
 const API_ENDPOINT_POST_SEARCH = 'https://api.development.forum.mike-automations.link/posts/_search';
 
-export const getPosts = async (payload: PostSearchPayload) => {
+export const getPosts = async ({ pageParam = 1, limit = 50, filters }: { 
+    pageParam?: number; 
+    limit?: number; 
+    filters?: PostSearchPayload; 
+}): Promise<PaginatedPostsResponse> => {
     const token = await getToken();
 
     if (!token) {
         console.error('Access token not found. Cannot perform authenticated search.');
         throw new Error('Authentication required.'); 
     }
+
+    const payload = {
+        page: pageParam, // Use the pageParam provided by useInfiniteQuery
+        limit: limit,
+        ...filters // Include any filters if necessary
+    };
 
     const config = {
         headers: {
