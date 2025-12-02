@@ -50,6 +50,11 @@ export type SignInPayload = {
     password: string;
 }
 
+export type PostSearchPayload = {
+    page: number;
+    limit: number;
+}
+
 /* --- Responses --- */
 export type RegisterResponse = {
     statusCode: number;
@@ -73,3 +78,5 @@ export type SignInResponse = {
         telephone: string;
     }
 }
+
+export type PostResponse = PostType[];

@@ -57,6 +57,7 @@ const Post = ({ data }: Props) => {
         <Text style={styles.footerText}>{data.comments}</Text>
         </View>
       </View>
+      
     </View>
   )
 }

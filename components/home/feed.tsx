@@ -1,38 +1,44 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { PostType } from '@/types/api';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { PostResponse, PostType } from '@/types/api';
 import Post from './post';
+import { useMutation } from '@tanstack/react-query';
+import { getPosts } from '@/services/posts';
 
 type Props = {
     activeFilters: {[key: string]: boolean};
 }
 
-const posts: PostType[] = [
-    {
-        id: 1,
-        title: "XD vs Figma, you tell me what is better. Please...",
-        content: "Does anyone know how XD works? Very new to the platform and looking for someone to show me the ropes!",
-        createdAt: "28-10-2021",
-        user: {
-            id: 1,
-            firstName: "John",
-            lastName: "Smith",
-            avatar: null,
-            email: "JohnSmith@email.com",
-            telephone: "555-555-5555"
-        },
-        likes: 3,
-        comments: 12,
-        tags: [{name: "Design"}]
-    }]
-
 const Feed = (props: Props) => {
-  return (
-    <View>
-      {posts.map((post, index) => (
-        <Post data={post} />
-        ))}
-    </View>
+    const [posts, setPosts] = useState<PostType[]>([]);
+
+    const PostsMutation = useMutation({
+        mutationFn: getPosts,
+        onSuccess: (data) => {
+            setPosts(data.data as PostType[]);
+        },
+        onError: (error) => {
+            Alert.alert('Issue getting posts');
+            console.error('Issue getting posts', error);
+        }});
+
+        useEffect(() => {
+            PostsMutation.mutate({page: 1, limit: 5});
+        }, []);
+
+    if (PostsMutation.isPending) {
+        return <Text>Loading posts...</Text>; 
+    }
+                
+    console.log('Posts in feed:', posts)
+
+    return (
+        <ScrollView>
+            {posts.map((post, index) => (
+            <Post key={index}
+                data={post} />
+            ))}
+        </ScrollView>
   )
 }
 
