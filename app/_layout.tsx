@@ -29,8 +29,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider  value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack screenOptions={{ headerShown: false }}>
-          {/* TODO: change back to splash */}
-          <Stack.Screen name="home" />
+          <Stack.Screen name="splash" />
         </Stack>
       </ThemeProvider>
     </QueryClientProvider>

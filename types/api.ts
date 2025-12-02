@@ -1,3 +1,23 @@
+export type PostType = {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: string;
+    user: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        avatar: string | null;
+        email: string;
+        telephone: string;
+    };
+    likes: number;
+    comments: number;
+    tags: {
+        name: string;
+    }[];
+}
+
 /* --- Payloads --- */
 export type RegisterPayload = {
     firstName: string;
