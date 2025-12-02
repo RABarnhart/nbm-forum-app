@@ -1,16 +1,29 @@
-import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { PostType } from '@/types/api'
 import { Colors } from '@/constants/theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { router } from 'expo-router';
 
 type Props = {
   data: PostType;
 }
 
 const Post = ({ data }: Props) => {
+
+  const handlePress = () => {
+      router.push({
+          pathname: `/detailed-post-view`,
+          params: { 
+              postData: JSON.stringify(data) 
+          }
+      });
+    }
+
   return (
     <View style={styles.container}>
+      <Pressable onPress={handlePress}>
+
       {/* --- Author and Date --- */}
       <View style={{flexDirection: 'row', marginTop: 15}}>
         <Text style={{fontFamily: 'Syne_700Bold', fontSize: 18, color: Colors.darkGrey}}>
@@ -40,6 +53,7 @@ const Post = ({ data }: Props) => {
 
       {/* --- Content --- */}
       <Text style={{fontFamily: 'Syne_400Regular', fontSize: 16, paddingVertical: 5}}>{data.content}</Text>
+      </Pressable>
 
       {/* --- Likes and Comments --- */}
       <View style={styles.footer}>

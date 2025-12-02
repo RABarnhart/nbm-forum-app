@@ -61,7 +61,7 @@ const SignupLayout = (props: Props) => {
 export default SignupLayout
 
 const styles = StyleSheet.create({
-    header: {
+  header: {
     flexDirection: 'row',
     fontSize: 24,
     alignItems: 'center',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginBottom: 15
   },
-    title: {
+  title: {
     fontFamily: 'Syne_700Bold', 
     fontSize: 25, 
     color: Colors.main
