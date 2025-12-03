@@ -18,6 +18,23 @@ export type PostType = {
     }[];
 }
 
+export type CommentType = {
+    id: number;
+    text: string;
+    userId: number;
+    postId: number;
+    createdAt: string;
+    user: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        avatar: string | null;
+        email: string;
+        telephone: string;
+    };
+    comments: CommentType[];
+}
+
 /* --- Payloads --- */
 export type RegisterPayload = {
     firstName: string;
@@ -82,6 +99,11 @@ export type SignInResponse = {
 export type PostResponse = PostType[];
 
 export type PaginatedPostsResponse = {
-    data: PostResponse; // Assuming PostResponse is the array type: PostType[]
+    data: PostResponse;
+    total: number; 
+};
+
+export type PaginatedCommentsResponse = {
+    data: CommentType[];
     total: number; 
 };

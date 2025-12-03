@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { router } from 'expo-router'
 import Post from '@/components/home/post'
 import { PostType } from '@/types/api'
+import CommentSection from '@/components/home/comment-section';
 
 type Props = {
 
@@ -45,8 +46,11 @@ let postData: PostType | undefined;
 
             {/* --- Post Content --- */}
             <Post data={postData} />
+        </View>
 
-            </View>
+        {/* --- Comment Section --- */}
+        <CommentSection postID={postData.id} />
+
     </View>
   )
 }
@@ -56,7 +60,7 @@ export default DetailedPostView
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        paddingTop: 80,
+        paddingTop: 50,
     },
     header: {
         flexDirection: 'row',
