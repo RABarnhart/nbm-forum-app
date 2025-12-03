@@ -85,3 +85,39 @@ headers: {
         throw error;
     }
 };
+
+export const postComment = async ({ 
+    postID, 
+    text
+}: { 
+    postID: number; 
+    text: string;
+}): Promise<any> => {
+    
+    const token = await getToken();
+
+    if (!token) {
+        throw new Error('Authentication required.'); 
+    }
+
+    const API_ENDPOINT_COMMENTS = `${API_ENDPOINT_COMMENTS_BASE}/${postID}/comments`;
+
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await axios.post(
+            API_ENDPOINT_COMMENTS, 
+            { text }, 
+            config
+        );
+        return response.data; 
+    } catch (error) {
+        console.error(`Error posting comment to post ${postID}:`, error);
+        throw error;
+    }
+};

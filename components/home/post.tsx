@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { PostType } from '@/types/api'
 import { Colors } from '@/constants/theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   data: PostType;
@@ -58,12 +59,12 @@ const Post = ({ data }: Props) => {
       {/* --- Likes and Comments --- */}
       <View style={styles.footer}>
         <View style={{flexDirection: 'row', marginRight: 20, alignItems: 'center'}}>
-          <TouchableOpacity>
+          <View>
             <Icon 
             name="heart-outline" 
             size={25} 
             color="gray" />
-          </TouchableOpacity>
+          </View>
           <Text style={styles.footerText}>{data.likes}</Text>
         </View>
         

@@ -1,5 +1,5 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import React from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getComments } from '@/services/posts';
 import Comment from './comment';
@@ -61,10 +61,9 @@ const CommentSection = ({ postID }: Props) => {
             {isLoading ? <ActivityIndicator size="large" style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} /> : null}
 
             {/* --- Comment List --- */}
-            <View>
+            <View style={{marginRight: 25}}>
                 {data?.pages.flatMap(page => page.data).map((item, index) => (
                     <Comment 
-                        // Use a unique ID as the key, falling back to index if necessary
                         key={item.id ? item.id.toString() : index.toString()} 
                         data={item} 
                     />

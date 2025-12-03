@@ -6,6 +6,8 @@ import Post from '@/components/home/post'
 import { PostType } from '@/types/api'
 import CommentSection from '@/components/home/comment-section';
 import { Colors } from '@/constants/theme';
+import { postComment } from '@/services/posts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type Props = {
 
@@ -13,12 +15,29 @@ type Props = {
 
 const DetailedPostView = ( props : Props) => {
 
+    const queryClient = useQueryClient();
     const params = useLocalSearchParams();
     const [comment, setComment] = useState('');
 
+    const commentMutation = useMutation({
+        mutationFn: (text: string) => postComment({ 
+            postID: postData?.id || 0, 
+            text: text 
+        }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['comments', postData?.id] });
+            setComment('');
+        },
+        onError: (error) => {
+            console.error('Failed to post comment:', error);
+        }
+    });
+
     const handleSubmitComment = () => {
-        console.log("Submitting comment:", comment);
-        setComment('');
+        if (!postData || !comment.trim() || commentMutation.isPending) {
+            return; 
+        }
+        commentMutation.mutate(comment.trim());
     }
     
     const handleBack = () => {
@@ -42,6 +61,7 @@ let postData: PostType | undefined;
         <>
     <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
+
             {/* --- Title and Back Arrow --- */}
             <View style={styles.header}>
                 <Pressable onPress={handleBack}>
