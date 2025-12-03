@@ -1,8 +1,9 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { ActivityIndicator, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getComments } from '@/services/posts';
 import Comment from './comment';
+import { Colors } from '@/constants/theme';
 
 type Props = {
     postID: number
@@ -39,18 +40,37 @@ const CommentSection = ({ postID }: Props) => {
         }
     }
 
+    if (data && data.pages.length > 0 && data.pages[0].data.length === 0) {
+        return (
+                <Text style={styles.message}>No comments yet. Be the first to comment!</Text>
+        )
+    }
+
+    if (isError) {
+        console.error('Error fetching comments:', error);
+        return (
+            <Text style={styles.message}>{`Error fetching comments: ${error.message}`}</Text>
+        )
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Comments</Text>
-            {isError ? <Text >{`Error fetching comments: ${error.message}`}</Text> : null}
+
+            {/* --- Loading and Error States --- */}
             {isLoading ? <ActivityIndicator size="large" style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} /> : null}
-            <FlatList
-            data={data?.pages.flatMap(page => page.data) || []}
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={({ item }) => <Comment data={item} />}
-                    onEndReached={loadMore} 
-                    onEndReachedThreshold={0.25}
-                />
+
+            {/* --- Comment List --- */}
+            <View>
+                {data?.pages.flatMap(page => page.data).map((item, index) => (
+                    <Comment 
+                        // Use a unique ID as the key, falling back to index if necessary
+                        key={item.id ? item.id.toString() : index.toString()} 
+                        data={item} 
+                    />
+                ))}
+            </View>
+
         </View>
     )
 }
@@ -63,10 +83,17 @@ const styles = StyleSheet.create({
         marginTop: 5,
         paddingHorizontal: 25,
         paddingTop: 15,
-        height: '100%'
+        height: '100%',
     },
     title: {
         fontFamily: 'Syne_700Bold',
         fontSize: 16,
-    }
+    },
+    message: {
+        textAlign: 'center', 
+        fontFamily: 'Syne_400Regular',
+        fontSize: 16,
+        padding: 20, 
+        color:Colors.darkGrey
+    },
 })
