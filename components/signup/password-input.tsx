@@ -36,7 +36,7 @@ const PasswordInput = <TFormValues extends FieldValues>({control, name, rules, p
               style={styles.iconContainer}
               onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
             <Icon
-              name={isPasswordVisible ? 'eye-off' : 'eye'} 
+              name={!isPasswordVisible ? 'eye-off' : 'eye'} 
               size={24}
               color={Colors.grey} 
               />
@@ -52,7 +52,6 @@ export default PasswordInput
 const styles = StyleSheet.create({
     input: {
         height: 55,
-        margin: 2,
         width: '99%',
         borderWidth: 1,
         borderColor: Colors.grey,

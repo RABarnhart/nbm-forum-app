@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/theme'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -18,7 +18,7 @@ type Inputs = {
 };
 
 const EMAIL_REGEX = /^\S+@\S+$/i;
-const PHONE_NUMBER_REGEX = /^(\(\d{3}\)|\d{3})[-\s]?\d{3}[-\s]?\d{4}$/;
+const PHONE_NUMBER_REGEX = /^\d{4}[-\s]?\d{3}[-\s]?\d{3}$/;
 
 const DetailsView = ({ onStepComplete, handleNext }: Props) => {
   const {
@@ -51,7 +51,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
     };
 
   return (
-    <View style={{height: '100%'}}>
+    <ScrollView showsVerticalScrollIndicator={false} bounces={false} style={styles.container}>
       <Text style={styles.heading}>Create your Account</Text>
       <Text style={styles.subtitle}>Enter your details below to start creating your brand new account.</Text>
 
@@ -60,7 +60,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
       <Controller
         control={control}
         name="firstName"
-        rules={{ required: 'Please enter a lastname' }}
+        rules={{ required: 'Please enter a first name' }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             style={styles.input}
@@ -119,7 +119,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
-            placeholder="you@email.com.au"
+            placeholder="0400-000-000"
             keyboardType="email-address"
             autoCapitalize="none"
           />
@@ -136,7 +136,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
       <ErrorBox message={
             errors.telephone?.type === 'pattern' 
               ? 'Invalid phone number format'
-              : errors.email?.message} />
+              : errors.telephone?.message} />
 
       {/* --- Submission Button --- */}
       <Pressable style={styles.nextButton} onPress={handleSubmit(onSubmit)}>
@@ -150,13 +150,18 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
           <Text style={{ color: Colors.main, fontSize: 14, textDecorationLine: 'underline' }}>Log in here.</Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
 export default DetailsView
 
 const styles = StyleSheet.create({
+  container:{
+    paddingRight: 2,
+    flex: 1,
+    height: '100%',
+  },
   heading: {
     fontFamily: 'Syne_700Bold',
     fontSize: 25,
@@ -188,9 +193,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
   },
-    footer: {
+  footer: {
     marginTop: 'auto',
+    paddingTop: 20,
     flexDirection: 'row',
     justifyContent: 'center',
-  }
+  },
 })

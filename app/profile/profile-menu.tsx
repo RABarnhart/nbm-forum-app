@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingTop: 70,
     flex: 1,
-    paddingHorizontal: 25,
+    paddingHorizontal: 35,
   },
   header: {
     flexDirection: 'row',
@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Syne_700Bold', 
     fontSize: 20, 
     marginTop: 30,
-    marginBottom: 10
+    marginBottom: 10,
+    marginLeft: 2
   },
   logo: {
     position: 'absolute',
@@ -115,7 +116,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 8,
     height: 60,
-    backgroundColor: Colors.lightGrey
+    backgroundColor: Colors.lightGrey,
+    borderRadius: 10,
+    borderColor: Colors.main,
+    borderWidth: 1
   },
   buttonText: {
     flex: 1,

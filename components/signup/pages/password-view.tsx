@@ -43,7 +43,7 @@ const PasswordView = ({ onStepComplete, handleNext }: Props) => {
       };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
       <Text style={styles.heading}>Let's Secure your Account</Text>
       <Text style={styles.subtitle}>Let's keep your NBM account safe with a secure password.</Text>
       
@@ -83,9 +83,7 @@ const PasswordView = ({ onStepComplete, handleNext }: Props) => {
       />
 
       {/* --- Error Messages --- */}
-      {errors.termsAndConditions && (
-          <ErrorBox message={errors.termsAndConditions.message} />
-      )}
+      r<ErrorBox message={errors.termsAndConditions?.message} />
 
       {errors.password?.type === 'required' && (
         <ErrorBox message={errors.password.message} />

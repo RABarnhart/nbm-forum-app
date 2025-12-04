@@ -48,7 +48,7 @@ export default TermsCheckboxInput;
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        marginTop: 15,
+        marginTop: 10,
         marginBottom: 10,
     },
     row: {
