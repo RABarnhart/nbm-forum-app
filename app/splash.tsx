@@ -11,7 +11,7 @@ type Props = {}
 export default function Splash({  }: Props) {
   useEffect(() => {
     const timeout = setTimeout(() => {
-      router.replace("/welcome");
+      router.replace("/profile/profile-menu");
     }, 1500); // duration of splash
 
     return () => clearTimeout(timeout);

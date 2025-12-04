@@ -1,6 +1,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { router } from 'expo-router'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {}
 
@@ -12,7 +13,7 @@ const PersonalInformationPage = (props: Props) => {
             {/* --- Title and Back Arrow --- */}
             <View style={styles.header}>
                 <Pressable onPress={router.back}>
-                <Text style={{ fontSize: 30 }}>←</Text>
+                    <Icon name="window-close" size={30} />
                 </Pressable>
             </View>
         </View>
