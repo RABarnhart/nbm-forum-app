@@ -31,7 +31,7 @@ const SignupLayout = (props: Props) => {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1, alignContent: 'center'}}>
-      <StatusBar style="dark" backgroundColor="#ffffff" translucent={false} />
+      <StatusBar style="dark" backgroundColor="white" translucent={false} />
 
       {/* --- Title and Back Arrow --- */}
       <View style={styles.header}>

@@ -39,7 +39,6 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
   };
   
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-      // format phone number
       const cleanedData = {
         ...data,
         telephone: formatPhoneNumber(data.telephone),
@@ -93,7 +92,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
       <Controller
         control={control}
         name="email"
-        rules={{ required: 'Oops! It looks like you have not entered an email. This is a required step.', pattern: EMAIL_REGEX }}
+        rules={{ required: 'Please enter an email', pattern: EMAIL_REGEX }}
         render={({ field: { onChange, onBlur, value }, fieldState:{error} }) => (
           <TextInput
             style={styles.input}
@@ -120,7 +119,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
             onChangeText={onChange}
             value={value}
             placeholder="0400-000-000"
-            keyboardType="email-address"
+            keyboardType="phone-pad"
             autoCapitalize="none"
           />
         )}

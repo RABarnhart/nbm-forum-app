@@ -1,7 +1,6 @@
 import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { Colors } from '@/constants/theme';
-import { router } from 'expo-router';
 import PhotoPicker from '../photo-picker';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -18,18 +17,11 @@ const PictureView = ({ onStepComplete }: Props) => {
         const data: Inputs = {
           imageUri: image
         };
-
         await onStepComplete(data); 
-
-        // Note: The parent component is responsible for final navigation (router.replace('/welcome'))
     };
     
     const handleSkip = () => {
-        // Pass up null data for the picture
         onStepComplete({ imageUri: undefined });
-        
-        // Since skipping is also the final action, let it trigger the submission, too.
-        // We'll trust the parent to navigate after submission finishes.
     };
   
   const [isImageSelected, setisImageSelected] = useState(false)
@@ -68,8 +60,7 @@ const PictureView = ({ onStepComplete }: Props) => {
         <View style={styles.imageContainer}>
           <Image 
             source={{ uri: image }} 
-            style={styles.profileImage}
-          />
+            style={styles.profileImage}/>
           <Pressable onPress={pickImage}>
             <Text style={styles.edit}> Edit profile picture</Text>
           </Pressable>
