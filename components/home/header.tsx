@@ -2,23 +2,32 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Colors } from '@/constants/theme'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { router } from 'expo-router';
 
 type Props = {}
 
 const Header = (props: Props) => {
+  const handleCreatePost = () => {
+    router.push('/create-post');
+  }
+
+  const handleProfilePress = () => {
+    router.push('/profile/profile-menu');
+  }
+
   return (
     <View style={styles.titleView}>
         <Text style={styles.title}>Forum</Text>
 
         <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleCreatePost}>
         <Icon 
             name="plus" 
             size={40} 
             color={Colors.main} 
             style={{alignSelf: 'center', padding: 5}} />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleProfilePress}>
         <Icon 
             name="account-circle" 
             size={40} 

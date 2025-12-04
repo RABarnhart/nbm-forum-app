@@ -2,9 +2,10 @@ import { Alert, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from '
 import React, { useEffect, useMemo, useState } from 'react'
 import { PaginatedPostsResponse, PostResponse, PostType } from '@/types/api';
 import Post from './post';
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { getPosts } from '@/services/posts';
 import { Colors } from '@/constants/theme';
+import { getUserId } from '@/services/token';
 
 type Props = {
     activeFilters: {[key: string]: boolean};
@@ -15,6 +16,15 @@ const Feed = (props: Props) => {
         limit: 5,
         tags: Object.keys(props.activeFilters).filter(key => props.activeFilters[key])
     };
+
+    const {
+        data: currentUserId, 
+        isLoading: isUserIdLoading,
+    } = useQuery({
+        queryKey: ['currentUserId'],
+        queryFn: getUserId,
+        staleTime: Infinity, 
+    });
 
     {/* --- Infinite Query --- */}
     const {
@@ -79,7 +89,7 @@ const Feed = (props: Props) => {
         <FlatList
             data={filteredPosts}
             keyExtractor={item => item.id.toString()}
-            renderItem={({ item }) => <Post data={item} />}
+            renderItem={({ item }) => <Post currentUserId={currentUserId} data={item} />}
             onEndReached={loadMore} 
             onEndReachedThreshold={0.25}
             ListFooterComponent={isFetchingNextPage ? 

@@ -13,7 +13,7 @@ import axios from 'axios';
 import { signIn } from '@/services/auth';
 import Loading from '@/components/loading';
 import { SignInPayload, SignInResponse } from '@/types/api';
-import { saveToken } from '@/services/token';
+import { saveToken, saveUserId } from '@/services/token';
 
 type Inputs = {
   email: string;
@@ -46,6 +46,7 @@ const SignIn = () => {
       if (data.accessToken)
         {
           await saveToken(data.accessToken);
+          await saveUserId(data.user.id.toString());
         } 
       router.replace('/home'); 
     },

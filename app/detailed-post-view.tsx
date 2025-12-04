@@ -39,10 +39,6 @@ const DetailedPostView = ( props : Props) => {
         }
         commentMutation.mutate(comment.trim());
     }
-    
-    const handleBack = () => {
-        router.back();
-    }
 
 let postData: PostType | undefined;
     if (params.postData && typeof params.postData === 'string') {
@@ -64,7 +60,7 @@ let postData: PostType | undefined;
 
             {/* --- Title and Back Arrow --- */}
             <View style={styles.header}>
-                <Pressable onPress={handleBack}>
+                <Pressable onPress={router.back}>
                 <Text style={{ fontSize: 30 }}>←</Text>
                 </Pressable>
             </View>

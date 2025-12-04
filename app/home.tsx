@@ -7,7 +7,7 @@ import Header from '@/components/home/header';
 
 type Props = {}
 
-const home = (props: Props) => {
+const Home = (props: Props) => {
 
 const filters = ['Design', 'XD', 'Figma', 'Development', 'Javascript', 'CSS']
 const [activeFilters, setActiveFilters] = useState<{ [key: string]: boolean }>({
@@ -85,7 +85,7 @@ const handleFilterPress = (filterName: string) => {
   )
 }
 
-export default home
+export default Home
 
 const styles = StyleSheet.create({
     container: {

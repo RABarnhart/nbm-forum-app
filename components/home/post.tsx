@@ -4,13 +4,13 @@ import { PostType } from '@/types/api'
 import { Colors } from '@/constants/theme';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
-import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
+  currentUserId?: string | null | undefined;
   data: PostType;
 }
 
-const Post = ({ data }: Props) => {
+const Post = ({ currentUserId, data }: Props) => {
 
   const handlePress = () => {
       router.push({
@@ -20,6 +20,15 @@ const Post = ({ data }: Props) => {
           }
       });
     }
+
+  const handleEdit = () => {
+    router.push({
+      pathname: `/edit-post`,
+      params: {
+        postData: JSON.stringify(data)
+      }
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -38,6 +47,14 @@ const Post = ({ data }: Props) => {
         <Text style={{fontFamily: 'Syne_400Regular', fontSize: 18, color: Colors.darkGrey}}>
           {data.createdAt.slice(0, 10)}
         </Text>
+
+      {/* --- Edit Button --- */}
+      {data.user.id.toString() === currentUserId ?
+        <TouchableOpacity
+          style={{marginLeft: 'auto'}}
+          onPress={handleEdit}>
+          <Text style={{color: Colors.main, textDecorationLine: 'underline', fontSize: 16}}>Edit</Text>
+        </TouchableOpacity>: null}
       </View>
 
       {/* --- Title --- */}

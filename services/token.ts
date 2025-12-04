@@ -1,6 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 const TOKEN_KEY = 'userAuthToken';
+const ID_KEY = 'userId';
 
 export async function saveToken(token: string) {
   try {
@@ -27,5 +28,24 @@ export async function deleteToken() {
     console.log('Token successfully deleted.');
   } catch (error) {
     console.error('Error deleting token:', error);
+  }
+}
+
+export async function saveUserId(id: string) {
+  try {
+    await SecureStore.setItemAsync(ID_KEY, id);
+    console.log('User ID successfully saved.');
+  } catch (error) {
+    console.error('Error saving user ID:', error);
+  }
+}
+
+export async function getUserId(): Promise<string | null> {
+  try {
+    const userId = await SecureStore.getItemAsync(ID_KEY);
+    return userId;
+  } catch (error) {
+    console.error('Error retrieving user ID:', error);
+    return null;
   }
 }
