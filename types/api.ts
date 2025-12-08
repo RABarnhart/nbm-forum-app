@@ -35,6 +35,14 @@ export type CommentType = {
     comments: CommentType[];
 }
 
+export type UserType = {
+    id: number;
+    email: string;
+    firstname: string;
+    lastname: string;
+    telephone: string;
+}
+
 /* --- Payloads --- */
 export type RegisterPayload = {
     firstName: string;

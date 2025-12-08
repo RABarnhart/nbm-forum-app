@@ -7,10 +7,11 @@ import { Alert, StyleSheet, View } from 'react-native'
 import { SignUpStep, SignupSteps } from '.'
 import { router } from 'expo-router'
 import { useMutation } from '@tanstack/react-query';
-import { registerUser } from '@/services/auth';
-import { RegisterPayload } from '@/types/api'
+import { registerUser, signIn } from '@/services/auth';
+import { RegisterPayload, RegisterResponse, SignInPayload, SignInResponse } from '@/types/api'
 import axios from 'axios';
 import Loading from '@/components/loading'
+import { saveToken, saveUserId } from '@/services/token'
 
 type Props = {
   currentStep: SignUpStep,
@@ -59,6 +60,8 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
       picture: { imageUri: undefined },
     });
 
+const [signInData, setSignInData] = React.useState<SignInPayload | null>(null);
+
   {/* --- Update data from components --- */}
   const updateSignupData = (step: keyof FormData, data: any) => {
       setSignupData(prevData => ({
@@ -101,12 +104,40 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
       }
     }
 
+  {/* --- SignIn Mutation --- */}
+  const signInMutation = useMutation({
+    mutationFn: signIn,
+    onSuccess: async (data: SignInResponse) => {
+      console.log("Chained Sign In successful!");
+      
+      if (data.accessToken) {
+        await saveToken(data.accessToken);
+        await saveUserId(data.user.id.toString());
+      }
+      
+      router.replace('/home'); 
+    },
+    onError: (error: any) => {
+        console.error("Chained Sign In Failed:", error);
+        Alert.alert("Login Failed", "Account created, but automatic login failed. Please log in manually.");
+        router.replace('/welcome');
+    },
+  });
+
+  {/* --- Register Mutation --- */}
   const registerMutation = useMutation({
     mutationFn: registerUser,
-    onSuccess: (data: any) => {
-      // Navigate on success
+    onSuccess: (data: RegisterResponse) => {
       console.log("Registration Successful:", data);
-      router.replace('/home'); 
+
+      const payload = signInData;
+      if (!payload) {
+        Alert.alert("Error", "Missing sign-in credentials.");
+        router.replace('/welcome');
+        return;
+      }
+
+      signInMutation.mutate(payload); 
     },
     onError: (error: any) => {
       console.error("Signup failed:", error);
@@ -136,6 +167,11 @@ const SignupContent = ({currentStep, setCurrentStep}: Props) => {
       avatar: pictureData.imageUri || null, 
       address: signupData.address, 
     } as RegisterPayload;
+
+    setSignInData({
+      email: signupData.details.email,
+      password: signupData.password.password,
+    });
     
     console.log('Final Payload:', finalPayload);
     

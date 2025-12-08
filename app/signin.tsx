@@ -4,7 +4,7 @@ import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Alert, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PasswordInput from '@/components/signup/password-input'; 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -40,7 +40,7 @@ const SignIn = () => {
 
   const signInMutation = useMutation({
     mutationFn: signIn,
-    onSuccess: async (data: any) => {
+    onSuccess: async (data: SignInResponse) => {
       // Navigate on success
       console.log("Sign in successful!");
       if (data.accessToken)

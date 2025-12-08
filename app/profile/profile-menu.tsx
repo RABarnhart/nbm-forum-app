@@ -117,9 +117,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
     height: 60,
     backgroundColor: Colors.lightGrey,
-    borderRadius: 10,
-    borderColor: Colors.main,
-    borderWidth: 1
+    // borderRadius: 10,
+    // borderColor: Colors.main,
+    // borderWidth: 1
   },
   buttonText: {
     flex: 1,
