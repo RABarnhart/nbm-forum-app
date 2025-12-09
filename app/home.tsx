@@ -28,14 +28,6 @@ const Home = (props: Props) => {
   });
   const [search, setSearch] = useState<string | undefined>();
 
-  const handleFilterPress = (filterName: string) => {
-    setActiveFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterName]: !prevFilters[filterName],
-    }));
-    console.log(activeFilters.filterName);
-  };
-
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.container}>

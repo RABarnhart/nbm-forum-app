@@ -13,10 +13,12 @@ type Props = {
 };
 
 const Feed = ({ activeFilters, search }: Props) => {
-  const initialPayload = {
+const initialPayload = {
     limit: 5,
-    tags: Object.keys(activeFilters).filter((key) => activeFilters[key]),
-  };
+    tags: Object.keys(activeFilters)
+        .filter((key) => activeFilters[key]) 
+        .flatMap(key => [key, key.toLowerCase()]), 
+};
 
   const { data: currentUserId, isLoading: isUserIdLoading } = useQuery({
     queryKey: ["currentUserId"],

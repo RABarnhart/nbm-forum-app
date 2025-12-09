@@ -64,7 +64,7 @@ export default PasswordInput;
 const styles = StyleSheet.create({
   input: {
     height: 55,
-    width: "99%",
+    width: "100%",
     borderWidth: 1,
     borderColor: Colors.grey,
     padding: 10,
