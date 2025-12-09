@@ -41,17 +41,16 @@ const PersonalInformationPage = (props: Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      firstName: user.firstName ?? "", //user?.firstName ?? "",
-      lastName: user.lastName ?? "", // user?.lastName ?? "",
-      email: user.email ?? "", // user?.email ?? "",
-      telephone: user.telephone ?? "", // user?.telephone ?? "",
+      firstName: user.firstName ?? "",
+      lastName: user.lastName ?? "",
+      email: user.email ?? "",
+      telephone: user.telephone ?? "",
     },
   });
 
   const [image, setImage] = useState<string | undefined>(undefined);
 
   /* --- Pick Image function --- */
-
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();

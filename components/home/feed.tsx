@@ -24,9 +24,7 @@ const Feed = ({ activeFilters, search }: Props) => {
     staleTime: Infinity,
   });
 
-  {
-    /* --- Infinite Query --- */
-  }
+  /* --- Infinite Query --- */
   const {
     data,
     error,
@@ -53,16 +51,12 @@ const Feed = ({ activeFilters, search }: Props) => {
     initialPageParam: 1,
   });
 
-  {
-    /* --- Flatten pages into a single list of posts --- */
-  }
+  /* --- Flatten pages into a single list of posts --- */
   const allPosts = useMemo(() => {
     return data?.pages?.flatMap((page) => page.data) || [];
   }, [data]);
 
-  {
-    /* --- Filtering posts --- */
-  }
+  /* --- Filtering posts --- */
   const activeTagNames = Object.keys(activeFilters).filter(
     (key) => activeFilters[key],
   );

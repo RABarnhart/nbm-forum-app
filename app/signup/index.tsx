@@ -29,12 +29,19 @@ const SignupLayout = (props: Props) => {
       const prevStep = SignupSteps[currentIndex - 1];
       setCurrentStep(prevStep);
     } else {
-      router.replace("/welcome");
+      router.back();
     }
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: top, paddingBottom: bottom }}>
+    <View
+      style={{
+        flex: 1,
+        paddingTop: top,
+        paddingBottom: bottom,
+        backgroundColor: "white",
+      }}
+    >
       {/* <SafeAreaView style={{ flex: 1, alignContent: "center", borderWidth: 1 }}> */}
       <StatusBar style="dark" backgroundColor="white" translucent={false} />
 

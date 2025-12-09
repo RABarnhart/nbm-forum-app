@@ -1,18 +1,18 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
-import Splash from './splash'
+import React from "react";
+import { StyleSheet } from "react-native";
+import Splash from "./splash";
 
-type Props = {}
+type Props = {};
 
 const Page = (props: Props) => {
-    return <Splash />
-}
+  return <Splash />;
+};
 
-export default Page
+export default Page;
 
 const styles = StyleSheet.create({
-    page:{
-        borderWidth:1,
-        height:'100%'
-    }
-})
+  page: {
+    borderWidth: 1,
+    height: "100%",
+  },
+});

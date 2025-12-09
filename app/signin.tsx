@@ -74,7 +74,7 @@ const SignIn = () => {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       {signInMutation.isPending && <Loading />}
       <StatusBar style="dark" backgroundColor="white" translucent={false} />
 
@@ -82,7 +82,7 @@ const SignIn = () => {
       <View style={styles.header}>
         <Pressable
           onPress={() => {
-            router.replace("/welcome");
+            router.back();
           }}
         >
           <Text style={{ fontSize: 30 }}>←</Text>
