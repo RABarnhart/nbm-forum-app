@@ -99,6 +99,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
               onChangeText={onChange}
               value={value}
               placeholder="Enter your last name here"
+              placeholderTextColor={Colors.grey}
             />
           )}
         />
@@ -119,6 +120,7 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
               onChangeText={onChange}
               value={value}
               placeholder="you@email.com.au"
+              placeholderTextColor={Colors.grey}
               keyboardType="email-address"
               autoCapitalize="none"
             />
@@ -144,7 +146,8 @@ const DetailsView = ({ onStepComplete, handleNext }: Props) => {
               onChangeText={onChange}
               value={value}
               placeholder="0400-000-000"
-              keyboardType="phone-pad"
+              placeholderTextColor={Colors.grey}
+              keyboardType="number-pad"
               autoCapitalize="none"
             />
           )}

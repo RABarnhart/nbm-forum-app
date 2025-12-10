@@ -70,6 +70,7 @@ const LocationView = ({ onStepComplete, handleNext }: Props) => {
         onChangeText={() => {} /*(text) => updateAddressField('street', text)*/}
         value={addressData.street}
         placeholder="Start typing..."
+        placeholderTextColor={Colors.grey}
       />
 
       {/* --- Submission Button --- */}

@@ -41,6 +41,7 @@ const PasswordInput = <TFormValues extends FieldValues>({
             onBlur={onBlur}
             value={value}
             placeholder={placeholder}
+            placeholderTextColor={Colors.grey}
             secureTextEntry={!isPasswordVisible}
           ></TextInput>
           <TouchableOpacity

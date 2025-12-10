@@ -53,6 +53,7 @@ const Home = (props: Props) => {
             onChangeText={setSearch}
             value={search}
             placeholder="Search"
+            placeholderTextColor={Colors.grey}
           />
         </View>
 
@@ -108,6 +109,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Syne_400Regular",
     fontSize: 20,
+    width: "100%",
   },
   searchBar: {
     width: "100%",

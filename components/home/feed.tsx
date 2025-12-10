@@ -38,35 +38,42 @@ const Feed = ({ filters, activeFilters, search }: Props) => {
   });
 
   /* --- Infinite Query --- */
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } =
-    useInfiniteQuery<PaginatedPostsResponse>({
-      queryKey: ["posts", initialPayload],
-      queryFn: async ({ pageParam }) => {
-        const payloadWithPage = {
-          pageParam: pageParam as number | undefined,
-          limit: initialPayload.limit,
-          filters: { tags: initialPayload.tags },
-        };
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+    isFetching,
+    isError,
+  } = useInfiniteQuery<PaginatedPostsResponse>({
+    queryKey: ["posts", initialPayload],
+    queryFn: async ({ pageParam }) => {
+      const payloadWithPage = {
+        pageParam: pageParam as number | undefined,
+        limit: initialPayload.limit,
+        filters: { tags: initialPayload.tags },
+      };
 
-        console.log(
-          `Fetching Page ${pageParam || 1} with filters:`,
-          initialPayload.tags,
-        );
-        const response = await getPosts(payloadWithPage);
-        console.log(`API Response for Page ${pageParam || 1}:`, response);
+      console.log(
+        `Fetching Page ${pageParam || 1} with filters:`,
+        initialPayload.tags,
+      );
+      const response = await getPosts(payloadWithPage);
+      console.log(`API Response for Page ${pageParam || 1}:`, response);
 
-        return response;
-      },
-      getNextPageParam: (lastPage, allPages) => {
-        const nextPage = allPages.length + 1;
-        if (allPages.length * initialPayload.limit < lastPage.total) {
-          return nextPage;
-        } else {
-          return undefined;
-        }
-      },
-      initialPageParam: 1,
-    });
+      return response;
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages.length + 1;
+      if (allPages.length * initialPayload.limit < lastPage.total) {
+        return nextPage;
+      } else {
+        return undefined;
+      }
+    },
+    initialPageParam: 1,
+  });
 
   /* --- Flatten pages into a single list of posts --- */
   const allPosts = useMemo(() => {
@@ -105,17 +112,14 @@ const Feed = ({ filters, activeFilters, search }: Props) => {
 
   return (
     <FlashList
-      contentContainerStyle={
-        {
-          // backgroundColor: "white",
-        }
-      }
       initialScrollIndex={0}
       data={postsToRender}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <Post currentUserId={currentUserId} data={item} />
       )}
+      refreshing={isFetching && !isFetchingNextPage}
+      onRefresh={() => refetch()}
       onEndReached={loadMore}
       onEndReachedThreshold={0.25}
       ListFooterComponent={
