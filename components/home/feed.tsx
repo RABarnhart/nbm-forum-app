@@ -10,48 +10,61 @@ import Post from "./post";
 type Props = {
   activeFilters: { [key: string]: boolean };
   search?: string;
+  filters: string[];
 };
 
-const Feed = ({ activeFilters, search }: Props) => {
-const initialPayload = {
-    limit: 5,
-    tags: Object.keys(activeFilters)
-        .filter((key) => activeFilters[key]) 
-        .flatMap(key => [key, key.toLowerCase()]), 
-};
+const Feed = ({ filters, activeFilters, search }: Props) => {
+    const activeTags = useMemo(() => 
+        Object.keys(activeFilters).filter((key) => activeFilters[key]),
+    [activeFilters]);
+
+    const initialPayload = useMemo(() => {
+
+      const tagsToSend = activeTags.length === 0 
+            ? filters 
+            : activeTags;
+            
+        const payload = {
+            limit: 5, 
+            tags: tagsToSend,
+        };
+        console.log("API Request Payload:", payload);
+        return payload;
+    }, [activeTags]); 
 
   const { data: currentUserId, isLoading: isUserIdLoading } = useQuery({
     queryKey: ["currentUserId"],
     queryFn: getUserId,
-    staleTime: Infinity,
+    staleTime: 0,
   });
 
   /* --- Infinite Query --- */
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
-  } = useInfiniteQuery<PaginatedPostsResponse>({
-    queryKey: ["posts", initialPayload],
-    queryFn: ({ pageParam }) =>
-      getPosts({
-        pageParam: pageParam as number | undefined,
-        ...initialPayload,
-      }),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages.length + 1;
-      if (allPages.length * initialPayload.limit < lastPage.total) {
-        return nextPage;
-      } else {
-        return undefined;
-      }
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError } =
+    useInfiniteQuery<PaginatedPostsResponse>({
+      queryKey: ["posts", initialPayload],
+      queryFn: async ({ pageParam }) => {
+        const payloadWithPage = {
+            pageParam: pageParam as number | undefined,
+                        limit: initialPayload.limit,
+            filters: { tags: initialPayload.tags },
+        };
+      
+        console.log(`Fetching Page ${pageParam || 1} with filters:`, initialPayload.tags);
+        const response = await getPosts(payloadWithPage); 
+        console.log(`API Response for Page ${pageParam || 1}:`, response);
+        
+        return response;
     },
-    initialPageParam: 1,
-  });
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage = allPages.length + 1;
+        if (allPages.length * initialPayload.limit < lastPage.total) {
+          return nextPage;
+        } else {
+          return undefined;
+        }
+      },
+      initialPageParam: 1,
+    });
 
   /* --- Flatten pages into a single list of posts --- */
   const allPosts = useMemo(() => {
@@ -59,27 +72,12 @@ const initialPayload = {
   }, [data]);
 
   /* --- Filtering posts --- */
-  const activeTagNames = Object.keys(activeFilters).filter(
-    (key) => activeFilters[key],
-  );
-
-  const filteredPosts = allPosts.filter((post) => {
-    if (activeTagNames.length === 0) {
-      return true;
-    }
-
-    const postHasActiveTag = post.tags.some((postTag) =>
-      activeTagNames.includes(postTag.name),
-    );
-
-    return postHasActiveTag;
-  });
-
-  const filterSeachTermPosts = search
-    ? filteredPosts.filter((p) => {
-        return p.title.includes(search);
+  const postsToRender = search
+    ? allPosts.filter((p) => {
+        return p.title.toLowerCase().includes(search.toLowerCase());
       })
-    : filteredPosts;
+    : allPosts;
+  /* --- --- */
 
   if (isError) {
     return <Text style={styles.feedMessage}>Error loading posts.</Text>;
@@ -91,7 +89,11 @@ const initialPayload = {
     }
   };
 
-  if (activeTagNames.length > 0 && filteredPosts.length === 0) {
+  const activeTagNames = Object.keys(activeFilters).filter(
+    (key) => activeFilters[key],
+  );
+
+  if (activeTagNames.length > 0 && postsToRender.length === 0) {
     return (
       <Text style={styles.feedMessage}>
         No posts match the selected filters.
@@ -101,7 +103,7 @@ const initialPayload = {
 
   return (
     <FlatList
-      data={filterSeachTermPosts}
+      data={postsToRender}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <Post currentUserId={currentUserId} data={item} />

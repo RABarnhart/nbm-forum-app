@@ -15,7 +15,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 type Props = {};
 
 const Home = (props: Props) => {
-  const filters = ["Design", "XD", "Figma", "Development", "Javascript", "CSS"];
+  const FILTERS = ["Design", "XD", "Figma", "Development", "Javascript", "CSS"];
   const [activeFilters, setActiveFilters] = useState<{
     [key: string]: boolean;
   }>({
@@ -27,6 +27,13 @@ const Home = (props: Props) => {
     CSS: false,
   });
   const [search, setSearch] = useState<string | undefined>();
+
+  const handlePress = (filter: string) => {
+    setActiveFilters((prevFilters) => ({
+      ...prevFilters,
+      [filter]: !prevFilters[filter],
+    }));
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -54,7 +61,7 @@ const Home = (props: Props) => {
           <View
             style={{ flexDirection: "row", marginTop: 15, marginBottom: 10 }}
           >
-            {filters.map((filter, index) => {
+            {FILTERS.map((filter, index) => {
               const isActive = activeFilters[filter];
 
               return (
@@ -68,12 +75,7 @@ const Home = (props: Props) => {
                         : Colors.lightGrey,
                     },
                   ]}
-                  onPress={() =>
-                    setActiveFilters((prevFilters) => ({
-                      ...prevFilters,
-                      [filter]: !prevFilters[filter],
-                    }))
-                  }
+                  onPress={() => handlePress(filter)}
                 >
                   <Text
                     style={[
@@ -90,7 +92,7 @@ const Home = (props: Props) => {
         </ScrollView>
       </View>
 
-      <Feed activeFilters={activeFilters} search={search} />
+      <Feed filters={FILTERS} activeFilters={activeFilters} search={search} />
     </View>
   );
 };

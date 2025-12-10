@@ -35,6 +35,16 @@ const Post = ({ currentUserId, data }: Props) => {
     });
   };
 
+  const formatTagName = (name: string) => {
+    if (name === "CSS") {
+      return name;
+    }
+    if (!name) {
+      return "";
+    }
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  };
+
   return (
     <View style={styles.container}>
       <Pressable onPress={handlePress}>
@@ -91,7 +101,7 @@ const Post = ({ currentUserId, data }: Props) => {
         <View style={{ flexDirection: "row", marginBottom: 10 }}>
           {data.tags.map((tag, index) => (
             <Text key={index} style={styles.tag}>
-              {tag.name}
+              {formatTagName(tag.name)}
             </Text>
           ))}
         </View>

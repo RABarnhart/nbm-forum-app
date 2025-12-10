@@ -20,6 +20,7 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 type Inputs = {
@@ -95,7 +96,12 @@ const SignIn = () => {
         </View>
       </View>
 
-      <View style={styles.container}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+        style={styles.container}
+      >
         <Text style={styles.heading}>Log In</Text>
         <Text style={styles.subtitle}>
           Enter your details to log into your account.
@@ -166,35 +172,34 @@ const SignIn = () => {
             Log In &rarr;
           </Text>
         </Pressable>
-
-        {/* --- Footer Section --- */}
-        <View style={styles.footer}>
+      </ScrollView>
+      {/* --- Footer Section --- */}
+      <View style={styles.footer}>
+        <Text
+          style={{
+            color: Colors.main,
+            fontFamily: "Syne_400Regular",
+            fontSize: 14,
+          }}
+        >
+          Don't have an account?{" "}
+        </Text>
+        <Pressable
+          onPress={() => {
+            router.replace("/signup");
+          }}
+        >
           <Text
             style={{
               color: Colors.main,
-              fontFamily: "Syne_400Regular",
               fontSize: 14,
+              fontFamily: "Syne_400Regular",
+              textDecorationLine: "underline",
             }}
           >
-            Don't have an account?{" "}
+            Create one here.
           </Text>
-          <Pressable
-            onPress={() => {
-              router.replace("/signup");
-            }}
-          >
-            <Text
-              style={{
-                color: Colors.main,
-                fontSize: 14,
-                fontFamily: "Syne_400Regular",
-                textDecorationLine: "underline",
-              }}
-            >
-              Create one here.
-            </Text>
-          </Pressable>
-        </View>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -259,6 +264,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginTop: "auto",
+    paddingTop: 20,
     flexDirection: "row",
     justifyContent: "center",
   },
