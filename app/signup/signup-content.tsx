@@ -56,9 +56,7 @@ type FormData = {
 };
 
 const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
-  {
-    /* --- Form Data useState --- */
-  }
+  /* --- Form Data useState --- */
   const [signupData, setSignupData] = React.useState<FormData>({
     details: {} as FormData["details"],
     address: {} as FormData["address"],
@@ -70,9 +68,7 @@ const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
     null,
   );
 
-  {
-    /* --- Update data from components --- */
-  }
+  /* --- Update data from components --- */
   const updateSignupData = (step: keyof FormData, data: any) => {
     setSignupData((prevData) => ({
       ...prevData,
@@ -80,9 +76,7 @@ const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
     }));
   };
 
-  {
-    /* --- Handle next button press --- */
-  }
+  /* --- Handle next button press --- */
   const handleNext = () => {
     const currentIndex = SignupSteps.indexOf(currentStep);
 
@@ -95,9 +89,7 @@ const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
     }
   };
 
-  {
-    /* --- Content area --- */
-  }
+  /* --- Content area --- */
   const renderCurrentView = () => {
     console.log(`Current step is ${currentStep}`);
     switch (currentStep) {
@@ -127,9 +119,7 @@ const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
     }
   };
 
-  {
-    /* --- SignIn Mutation --- */
-  }
+  /* --- SignIn Mutation --- */
   const signInMutation = useMutation({
     mutationFn: signIn,
     onSuccess: async (data: SignInResponse) => {
@@ -152,9 +142,7 @@ const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
     },
   });
 
-  {
-    /* --- Register Mutation --- */
-  }
+  /* --- Register Mutation --- */
   const registerMutation = useMutation({
     mutationFn: registerUser,
     onSuccess: (data: RegisterResponse) => {
@@ -185,9 +173,7 @@ const SignupContent = ({ currentStep, setCurrentStep }: Props) => {
     },
   });
 
-  {
-    /* --- Form Submission / Registration API call --- */
-  }
+  /* --- Form Submission / Registration API call --- */
   const handleFormSubmission = async (pictureData: FormData["picture"]) => {
     const finalDataSnapshot: FormData = {
       ...signupData,

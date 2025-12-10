@@ -39,9 +39,7 @@ const ProfileMenu = (props: Props) => {
             <Text style={{ fontSize: 30 }}>←</Text>
           </Pressable>
         </View>
-        <View style={styles.logo}>
-          <Text style={styles.title}>Profile</Text>
-        </View>
+        <Text style={styles.title}>Profile</Text>
 
         {/* --- Settings --- */}
         <View>
@@ -158,7 +156,9 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Syne_700Bold",
     fontSize: 28,
-    paddingTop: 25,
+    position: "absolute",
+    alignSelf: "center",
+    top: 0,
   },
   heading: {
     fontFamily: "Syne_700Bold",
@@ -166,13 +166,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 10,
     marginLeft: 2,
-  },
-  logo: {
-    position: "absolute",
-    flexDirection: "row",
-    alignSelf: "center",
-    alignItems: "center",
-    top: 45,
   },
   button: {
     flexDirection: "row",

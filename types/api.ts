@@ -80,6 +80,12 @@ export type PostSearchPayload = {
   limit: number;
 };
 
+export type CreatePostPayload = {
+  title: string;
+  content: string;
+  tags: string[];
+};
+
 /* --- Responses --- */
 export type RegisterResponse = {
   statusCode: number;
