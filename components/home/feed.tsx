@@ -2,9 +2,10 @@ import { Colors } from "@/constants/theme";
 import { getPosts } from "@/services/posts";
 import { getUserId } from "@/services/token";
 import { PaginatedPostsResponse } from "@/types/api";
+import { FlashList } from "@shopify/flash-list";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, { useMemo } from "react";
-import { FlatList, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import Post from "./post";
 
 type Props = {
@@ -14,23 +15,21 @@ type Props = {
 };
 
 const Feed = ({ filters, activeFilters, search }: Props) => {
-    const activeTags = useMemo(() => 
-        Object.keys(activeFilters).filter((key) => activeFilters[key]),
-    [activeFilters]);
+  const activeTags = useMemo(
+    () => Object.keys(activeFilters).filter((key) => activeFilters[key]),
+    [activeFilters],
+  );
 
-    const initialPayload = useMemo(() => {
+  const initialPayload = useMemo(() => {
+    const tagsToSend = activeTags.length === 0 ? filters : activeTags;
 
-      const tagsToSend = activeTags.length === 0 
-            ? filters 
-            : activeTags;
-            
-        const payload = {
-            limit: 5, 
-            tags: tagsToSend,
-        };
-        console.log("API Request Payload:", payload);
-        return payload;
-    }, [activeTags]); 
+    const payload = {
+      limit: 5,
+      tags: tagsToSend,
+    };
+    console.log("API Request Payload:", payload);
+    return payload;
+  }, [activeTags]);
 
   const { data: currentUserId, isLoading: isUserIdLoading } = useQuery({
     queryKey: ["currentUserId"],
@@ -44,17 +43,20 @@ const Feed = ({ filters, activeFilters, search }: Props) => {
       queryKey: ["posts", initialPayload],
       queryFn: async ({ pageParam }) => {
         const payloadWithPage = {
-            pageParam: pageParam as number | undefined,
-                        limit: initialPayload.limit,
-            filters: { tags: initialPayload.tags },
+          pageParam: pageParam as number | undefined,
+          limit: initialPayload.limit,
+          filters: { tags: initialPayload.tags },
         };
-      
-        console.log(`Fetching Page ${pageParam || 1} with filters:`, initialPayload.tags);
-        const response = await getPosts(payloadWithPage); 
+
+        console.log(
+          `Fetching Page ${pageParam || 1} with filters:`,
+          initialPayload.tags,
+        );
+        const response = await getPosts(payloadWithPage);
         console.log(`API Response for Page ${pageParam || 1}:`, response);
-        
+
         return response;
-    },
+      },
       getNextPageParam: (lastPage, allPages) => {
         const nextPage = allPages.length + 1;
         if (allPages.length * initialPayload.limit < lastPage.total) {
@@ -102,7 +104,13 @@ const Feed = ({ filters, activeFilters, search }: Props) => {
   }
 
   return (
-    <FlatList
+    <FlashList
+      contentContainerStyle={
+        {
+          // backgroundColor: "white",
+        }
+      }
+      initialScrollIndex={0}
       data={postsToRender}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (

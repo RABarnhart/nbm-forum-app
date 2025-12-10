@@ -1,7 +1,9 @@
 import ActiveTagsDropdown from "@/components/posting/active-tags-dropdown";
 import ProgressButton from "@/components/progress-button";
 import { Colors } from "@/constants/theme";
+import { createPost } from "@/services/posts";
 import { CreatePostPayload } from "@/types/api";
+import { useMutation,  useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -12,6 +14,18 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 type Props = {};
 
 const SubmitPost = (props: Props) => {
+    const queryClient = useQueryClient();
+
+    const createPostMutation = useMutation({
+    mutationFn: (payload: CreatePostPayload) =>
+      createPost({
+        payload: payload
+      }),
+    onError: (error) => {
+      console.error("Failed to post comment:", error);
+    },
+  });
+
   const params = useLocalSearchParams();
   let postData: CreatePostPayload = {
     title: "",
@@ -42,8 +56,7 @@ const SubmitPost = (props: Props) => {
 
   const onSubmit: SubmitHandler<CreatePostPayload> = (data) => {
     console.log("Post submitted to API:", data);
-
-    // TODO: Call API
+    createPostMutation.mutate(data)
 
     router.push("/home");
   };

@@ -1,4 +1,5 @@
 import {
+  CreatePostPayload,
     PaginatedCommentsResponse,
     PaginatedPostsResponse
 } from "@/types/api";
@@ -7,7 +8,7 @@ import { getToken } from "./token";
 
 const API_ENDPOINT_POST_SEARCH =
   "https://api.development.forum.mike-automations.link/posts/_search";
-const API_ENDPOINT_COMMENTS_BASE =
+const API_ENDPOINT_POST =
   "https://api.development.forum.mike-automations.link/posts";
 
 export const getPosts = async ({
@@ -71,7 +72,7 @@ export const getComments = async ({
     throw new Error("Authentication required.");
   }
 
-  const API_ENDPOINT_COMMENTS = `${API_ENDPOINT_COMMENTS_BASE}/${postID}/comments`;
+  const API_ENDPOINT_COMMENTS = `${API_ENDPOINT_POST}/${postID}/comments`;
 
   const payload = {
     page: pageParam,
@@ -110,7 +111,7 @@ export const postComment = async ({
     throw new Error("Authentication required.");
   }
 
-  const API_ENDPOINT_COMMENTS = `${API_ENDPOINT_COMMENTS_BASE}/${postID}/comments`;
+  const API_ENDPOINT_COMMENTS = `${API_ENDPOINT_POST}/${postID}/comments`;
 
   const config = {
     headers: {
@@ -124,6 +125,33 @@ export const postComment = async ({
     return response.data;
   } catch (error) {
     console.error(`Error posting comment to post ${postID}:`, error);
+    throw error;
+  }
+};
+
+export const createPost = async ({
+  payload
+}: {
+  payload: CreatePostPayload;
+}): Promise<any> => {
+  const token = await getToken();
+
+  if (!token) {
+    throw new Error("Authentication required.");
+  }
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  try {
+    const response = await axios.post(API_ENDPOINT_POST, payload, config);
+    return response.data;
+  } catch (error) {
+    console.error(`Error Creating post:`, error);
     throw error;
   }
 };
