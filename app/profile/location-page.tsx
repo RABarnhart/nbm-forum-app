@@ -51,7 +51,7 @@ const LocationPage = (props: Props) => {
 
   const handleSave = () => {
     Alert.alert(
-      "Dang it! 😫",
+      "Dang it!",
       "There is no API endpoint for editing user information",
     );
     console.log("Updated Address: ", addressData);

@@ -1,8 +1,6 @@
-import { getTerms } from "@/services/terms";
 import BottomSheet, {
   BottomSheetScrollView
 } from "@gorhom/bottom-sheet";
-import { useQuery } from "@tanstack/react-query";
 import React, { forwardRef, useCallback, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import AppText from "./app-text";
@@ -45,7 +43,7 @@ const PrivacyPolicy = forwardRef<BottomSheet, Props>(
 
           <View style={{ flex: 1, maxHeight: "100%" }}>
             <AppText textStyle={"body"}>
-              There is no endpoint for Privacy Policy 🥲
+              There is no endpoint for Privacy Policy
             </AppText>
           </View>
         </BottomSheetScrollView>

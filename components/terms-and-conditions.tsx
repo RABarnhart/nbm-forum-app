@@ -1,10 +1,8 @@
 import { getTerms } from "@/services/terms";
 import { TermsAndConditionsResponse } from "@/types/api";
-import BottomSheet, {
-  BottomSheetScrollView
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useQuery } from "@tanstack/react-query";
-import React, { forwardRef, useCallback, useEffect } from "react";
+import React, { forwardRef, useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import AppText from "./app-text";
 import ProgressButton from "./progress-button";

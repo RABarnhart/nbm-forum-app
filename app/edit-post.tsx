@@ -72,7 +72,7 @@ const SubmitPost = (props: Props) => {
   const onSubmit: SubmitHandler<CreatePostPayload> = (data) => {
     // console.log("Post submitted to API:", data);
     // createPostMutation.mutate(data)
-    Alert.alert("Dang it! 😫", "There is no API endpoint for editing posts")
+    Alert.alert("Dang it!", "There is no API endpoint for editing posts")
 
     router.push("/home");
   };

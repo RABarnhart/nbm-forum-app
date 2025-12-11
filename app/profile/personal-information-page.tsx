@@ -91,7 +91,7 @@ const PersonalInformationPage = (props: Props) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     Alert.alert(
-      "Dang it! 😫",
+      "Dang it!",
       "There is no API endpoint for editing user information",
     );
     console.log("Details changed: ", data);

@@ -51,7 +51,7 @@ const ProfileMenu = (props: Props) => {
   const handleDeleteAccountPress = () => {
     console.log("Delete Account Pressed");
     Alert.alert(
-      "Dang it! 😫",
+      "Dang it!",
       "There is no API endpoint for deleting your account",
     );
   };
