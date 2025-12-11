@@ -31,7 +31,7 @@ const Feed = ({ filters, activeFilters, search }: Props) => {
     return payload;
   }, [activeTags]);
 
-  const { data: currentUserId, isLoading: isUserIdLoading } = useQuery({
+  const { data: currentUserId } = useQuery({
     queryKey: ["currentUserId"],
     queryFn: getUserId,
     staleTime: 0,

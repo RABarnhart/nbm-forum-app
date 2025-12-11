@@ -121,3 +121,9 @@ export type PaginatedCommentsResponse = {
   data: CommentType[];
   total: number;
 };
+
+export type TermsAndConditionsResponse = {
+  id: number;
+  description: string;
+  createdAt: string;
+}

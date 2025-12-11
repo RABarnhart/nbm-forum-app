@@ -41,10 +41,10 @@ const PersonalInformationPage = (props: Props) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      firstName: user.firstName ?? "",
-      lastName: user.lastName ?? "",
-      email: user.email ?? "",
-      telephone: user.telephone ?? "",
+      firstName: user ? user.firstName : "",
+      lastName: user ? user.lastName : "",
+      email: user ?  user.email : "",
+      telephone: user ? user.telephone : "",
     },
   });
 

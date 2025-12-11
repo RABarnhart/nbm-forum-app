@@ -1,8 +1,9 @@
+import TermsAndConditions from "@/components/terms-and-conditions";
 import { Colors } from "@/constants/theme";
 import { deleteToken, deleteUserId } from "@/services/token";
 import useUserStore from "@/utils/use-user-store";
 import { router } from "expo-router";
-import React from "react";
+import React, { useRef, useState, useCallback } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -10,11 +11,24 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 type Props = {};
 
 const ProfileMenu = (props: Props) => {
+  const termsSheetRef = useRef<BottomSheet>(null);
+  const [showSheet, setShowSheet] = useState(false);
+
+  const closeTermsSheet = useCallback(() => {
+    if (termsSheetRef.current) {
+        termsSheetRef.current.close();
+    }
+    setTimeout(() => setShowSheet(false), 200);
+  }, []);
+
+
   const handlePersonalInfoPress = () => {
     router.push("/profile/personal-information-page");
   };
@@ -28,112 +42,137 @@ const ProfileMenu = (props: Props) => {
     console.log("Delete Account Pressed");
   };
 
+  const handleTermsPress = () => {
+    setShowSheet(true);
+  };
+
   const { deleteUser } = useUserStore();
 
   return (
-    <View style={styles.container}>
-      <View style={{ flex: 1 }}>
-        {/* --- Title and Back Arrow --- */}
-        <View style={styles.header}>
-          <Pressable onPress={router.back}>
-            <Text style={{ fontSize: 30 }}>←</Text>
-          </Pressable>
-        </View>
-        <Text style={styles.title}>Profile</Text>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={{ flex: 1 }}>
+          {/* --- Title and Back Arrow --- */}
+          <View style={styles.header}>
+            <Pressable onPress={router.back}>
+              <Text style={{ fontSize: 30 }}>←</Text>
+            </Pressable>
+          </View>
+          <Text style={styles.title}>Profile</Text>
 
-        {/* --- Settings --- */}
-        <View>
-          <Text style={styles.heading}>Settings</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handlePersonalInfoPress}
-          >
-            <Icon
-              name="account"
-              size={35}
-              color={Colors.main}
-              style={{ marginHorizontal: 10 }}
-            />
-            <Text style={styles.buttonText}>Personal Information</Text>
-            <Icon name="chevron-right" size={35} color={Colors.grey} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLocationPress}>
-            <Icon
-              name="map-marker"
-              size={35}
-              color={Colors.main}
-              style={{ marginHorizontal: 10 }}
-            />
-            <Text style={styles.buttonText}>Location</Text>
-            <Icon name="chevron-right" size={35} color={Colors.grey} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleUpdatePasswordPress}
-          >
-            <Icon
-              name="lock"
-              size={35}
-              color={Colors.main}
-              style={{ marginHorizontal: 10 }}
-            />
-            <Text style={styles.buttonText}>Update Password</Text>
-            <Icon name="chevron-right" size={35} color={Colors.grey} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleDeleteAccountPress}
-          >
-            <Icon
-              name="trash-can"
-              size={35}
-              color={Colors.main}
-              style={{ marginHorizontal: 10 }}
-            />
-            <Text style={styles.buttonText}>Delete Account</Text>
-            <Icon name="chevron-right" size={35} color={Colors.grey} />
-          </TouchableOpacity>
+          {/* --- Settings --- */}
+          <View>
+            <Text style={styles.heading}>Settings</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handlePersonalInfoPress}
+            >
+              <Icon
+                name="account"
+                size={35}
+                color={Colors.main}
+                style={{ marginHorizontal: 10 }}
+              />
+              <Text style={styles.buttonText}>Personal Information</Text>
+              <Icon name="chevron-right" size={35} color={Colors.grey} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleLocationPress}
+            >
+              <Icon
+                name="map-marker"
+                size={35}
+                color={Colors.main}
+                style={{ marginHorizontal: 10 }}
+              />
+              <Text style={styles.buttonText}>Location</Text>
+              <Icon name="chevron-right" size={35} color={Colors.grey} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleUpdatePasswordPress}
+            >
+              <Icon
+                name="lock"
+                size={35}
+                color={Colors.main}
+                style={{ marginHorizontal: 10 }}
+              />
+              <Text style={styles.buttonText}>Update Password</Text>
+              <Icon name="chevron-right" size={35} color={Colors.grey} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleDeleteAccountPress}
+            >
+              <Icon
+                name="trash-can"
+                size={35}
+                color={Colors.main}
+                style={{ marginHorizontal: 10 }}
+              />
+              <Text style={styles.buttonText}>Delete Account</Text>
+              <Icon name="chevron-right" size={35} color={Colors.grey} />
+            </TouchableOpacity>
+          </View>
+
+          {/* --- Legal --- */}
+          <View>
+            <Text style={styles.heading}>Legal</Text>
+            <TouchableOpacity style={styles.button} onPress={handleTermsPress}>
+              <Icon
+                name="book-open-variant"
+                size={35}
+                color={Colors.main}
+                style={{ marginHorizontal: 10 }}
+              />
+              <Text style={styles.buttonText}>Terms of Service</Text>
+              <Icon name="chevron-right" size={35} color={Colors.grey} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => {}}>
+              <Icon
+                name="book-open-blank-variant"
+                size={35}
+                color={Colors.main}
+                style={{ marginHorizontal: 10 }}
+              />
+              <Text style={styles.buttonText}>Privacy Policy</Text>
+              <Icon name="chevron-right" size={35} color={Colors.grey} />
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* --- Legal --- */}
-        <View>
-          <Text style={styles.heading}>Legal</Text>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <Icon
-              name="book-open-variant"
-              size={35}
-              color={Colors.main}
-              style={{ marginHorizontal: 10 }}
-            />
-            <Text style={styles.buttonText}>Terms of Service</Text>
-            <Icon name="chevron-right" size={35} color={Colors.grey} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <Icon
-              name="book-open-blank-variant"
-              size={35}
-              color={Colors.main}
-              style={{ marginHorizontal: 10 }}
-            />
-            <Text style={styles.buttonText}>Privacy Policy</Text>
-            <Icon name="chevron-right" size={35} color={Colors.grey} />
-          </TouchableOpacity>
-        </View>
+        {/* --- Sign Out --- */}
+        <TouchableOpacity
+          style={styles.signout}
+          onPress={async () => {
+            deleteUser();
+            deleteToken();
+            deleteUserId();
+            router.replace("/");
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Syne_400Regular",
+              color: Colors.errorRed,
+              textDecorationLine: "underline",
+              fontSize: 18,
+            }}
+          >
+            Sign out
+          </Text>
+        </TouchableOpacity>
       </View>
 
-      {/* --- Sign Out --- */}
-      <TouchableOpacity
-        style={styles.signout}
-        onPress={async () => {
-          deleteUser();
-          deleteToken();
-          deleteUserId();
-          router.replace("/");
-        }}
-      >
-        <Text style={{fontFamily: 'Syne_400Regular', color:Colors.errorRed, textDecorationLine: 'underline', fontSize: 18}}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
+      {showSheet && (
+        <TermsAndConditions
+          ref={termsSheetRef} // 👈 Pass the ref to control the sheet
+          onClose={closeTermsSheet} // 👈 Pass the cleanup function
+        />
+      )}
+    </GestureHandlerRootView>
   );
 };
 
@@ -189,6 +228,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     height: 80,
     width: "100%",
-    paddingBottom: 20
+    paddingBottom: 20,
   },
 });

@@ -4,12 +4,12 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = {
-  iconName: string;
+  iconName?: string;
   text: string;
   onPress: () => void;
 };
 
-const ProgressButton = ({ iconName, text, onPress }: Props) => {
+const ProgressButton = ({ iconName = "", text, onPress }: Props) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <Text style={styles.text}>{text}</Text>

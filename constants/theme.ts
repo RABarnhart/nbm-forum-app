@@ -10,20 +10,20 @@ const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: "black", 
+    background: '#e6e6e6',
+    tint: '#624ff0',
+    icon: '#5b5b5b',
+    tabIconDefault: '#a5a5a5',
+    tabIconSelected: '#624ff0',
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: '#e6e6e6',
+    background: '#5b5b5b', 
+    tint: '#624ff0', 
+    icon: '#e6e6e6', 
+    tabIconDefault: '#a5a5a5', 
+    tabIconSelected: '#624ff0',
   },
   main: '#624ff0',
   darkGrey: '#5b5b5b',
@@ -43,17 +43,32 @@ export const Fonts = Platform.select({
     rounded: 'ui-rounded',
     /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
+    // Custom Syne fonts
+    syne: {
+      regular: 'Syne_400Regular',
+      bold: 'Syne_700Bold',
+    },
   },
   default: {
     sans: 'normal',
     serif: 'serif',
     rounded: 'normal',
     mono: 'monospace',
+    // Custom Syne fonts
+    syne: {
+      regular: 'Syne_400Regular',
+      bold: 'Syne_700Bold',
+    },
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",
     rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    // Custom Syne fonts
+    syne: {
+      regular: 'Syne_400Regular',
+      bold: 'Syne_700Bold',
+    },
   },
 });
