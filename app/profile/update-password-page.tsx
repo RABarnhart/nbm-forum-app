@@ -6,7 +6,7 @@ import { Colors } from "@/constants/theme";
 import { router } from "expo-router";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = {};
@@ -36,7 +36,10 @@ const UpdatePasswordPage = (props: Props) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // TODO: Mutate API
+    Alert.alert(
+      "Dang it! 😫",
+      "There is no API endpoint for editing user information",
+    );
     console.log("Password changed: ", data);
     router.back();
   };

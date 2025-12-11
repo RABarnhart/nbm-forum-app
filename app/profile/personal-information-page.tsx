@@ -43,7 +43,7 @@ const PersonalInformationPage = (props: Props) => {
     defaultValues: {
       firstName: user ? user.firstName : "",
       lastName: user ? user.lastName : "",
-      email: user ?  user.email : "",
+      email: user ? user.email : "",
       telephone: user ? user.telephone : "",
     },
   });
@@ -90,7 +90,10 @@ const PersonalInformationPage = (props: Props) => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // TODO: Mutate API
+    Alert.alert(
+      "Dang it! 😫",
+      "There is no API endpoint for editing user information",
+    );
     console.log("Details changed: ", data);
     router.back();
   };

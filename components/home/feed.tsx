@@ -5,7 +5,7 @@ import { PaginatedPostsResponse } from "@/types/api";
 import { FlashList } from "@shopify/flash-list";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React, { useMemo } from "react";
-import { StyleSheet, Text } from "react-native";
+import { ActivityIndicator, StyleSheet, Text } from "react-native";
 import Post from "./post";
 
 type Props = {
@@ -104,9 +104,7 @@ const Feed = ({ filters, activeFilters, search }: Props) => {
 
   if (activeTagNames.length > 0 && postsToRender.length === 0) {
     return (
-      <Text style={styles.feedMessage}>
-        No posts match the selected filters.
-      </Text>
+      <ActivityIndicator size="large" style={{padding: 50}}/>
     );
   }
 

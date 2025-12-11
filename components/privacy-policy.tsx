@@ -1,5 +1,4 @@
 import { getTerms } from "@/services/terms";
-import { TermsAndConditionsResponse } from "@/types/api";
 import BottomSheet, {
   BottomSheetScrollView
 } from "@gorhom/bottom-sheet";
@@ -13,7 +12,7 @@ type Props = {
   onClose: () => void;
 };
 
-const TermsAndConditions = forwardRef<BottomSheet, Props>(
+const PrivacyPolicy = forwardRef<BottomSheet, Props>(
   ({ onClose }, ref) => {
     const bottomSheetRef = ref as React.RefObject<BottomSheet>;
     // callbacks
@@ -31,12 +30,6 @@ const TermsAndConditions = forwardRef<BottomSheet, Props>(
       [onClose],
     );
 
-    const { data: termsAndConditionsResponse } =
-      useQuery<TermsAndConditionsResponse>({
-        queryKey: ["termsAndConditions"],
-        queryFn: getTerms,
-      });
-
     return (
       <BottomSheet
         ref={ref}
@@ -52,7 +45,7 @@ const TermsAndConditions = forwardRef<BottomSheet, Props>(
 
           <View style={{ flex: 1, maxHeight: "100%" }}>
             <AppText textStyle={"body"}>
-              {termsAndConditionsResponse?.description}
+              There is no endpoint for Privacy Policy 🥲
             </AppText>
           </View>
         </BottomSheetScrollView>
@@ -61,7 +54,7 @@ const TermsAndConditions = forwardRef<BottomSheet, Props>(
   },
 );
 
-export default TermsAndConditions;
+export default PrivacyPolicy;
 
 const styles = StyleSheet.create({
   contentContainer: {

@@ -2,7 +2,14 @@ import ProgressButton from "@/components/progress-button";
 import { Colors } from "@/constants/theme";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 type Props = {};
@@ -43,7 +50,10 @@ const LocationPage = (props: Props) => {
   });
 
   const handleSave = () => {
-    // TODO: Mutate data in API
+    Alert.alert(
+      "Dang it! 😫",
+      "There is no API endpoint for editing user information",
+    );
     console.log("Updated Address: ", addressData);
     router.back();
   };

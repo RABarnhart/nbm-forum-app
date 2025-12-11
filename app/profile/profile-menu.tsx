@@ -1,10 +1,13 @@
+import PrivacyPolicy from "@/components/privacy-policy";
 import TermsAndConditions from "@/components/terms-and-conditions";
 import { Colors } from "@/constants/theme";
 import { deleteToken, deleteUserId } from "@/services/token";
 import useUserStore from "@/utils/use-user-store";
+import BottomSheet from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useRef, useState, useCallback } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
+  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -13,21 +16,28 @@ import {
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import BottomSheet from "@gorhom/bottom-sheet";
 
 type Props = {};
 
 const ProfileMenu = (props: Props) => {
   const termsSheetRef = useRef<BottomSheet>(null);
-  const [showSheet, setShowSheet] = useState(false);
+  const privacyPolicySheetRef = useRef<BottomSheet>(null);
+  const [showTermsSheet, setShowTermsSheet] = useState(false);
+  const [showPrivacyPolicySheet, setShowPrivacyPolicySheet] = useState(false);
 
   const closeTermsSheet = useCallback(() => {
     if (termsSheetRef.current) {
-        termsSheetRef.current.close();
+      termsSheetRef.current.close();
     }
-    setTimeout(() => setShowSheet(false), 200);
+    setTimeout(() => setShowTermsSheet(false), 200);
   }, []);
 
+  const closePrivacyPolicySheet = useCallback(() => {
+    if (privacyPolicySheetRef.current) {
+      privacyPolicySheetRef.current.close();
+    }
+    setTimeout(() => setShowPrivacyPolicySheet(false), 200);
+  }, []);
 
   const handlePersonalInfoPress = () => {
     router.push("/profile/personal-information-page");
@@ -40,10 +50,24 @@ const ProfileMenu = (props: Props) => {
   };
   const handleDeleteAccountPress = () => {
     console.log("Delete Account Pressed");
+    Alert.alert(
+      "Dang it! 😫",
+      "There is no API endpoint for deleting your account",
+    );
   };
 
   const handleTermsPress = () => {
-    setShowSheet(true);
+    setShowTermsSheet(true);
+  };
+  const handlePrivacyPolicyPress = () => {
+    setShowPrivacyPolicySheet(true);
+  };
+
+  const handleSignOutPress = async () => {
+    deleteUser();
+    deleteToken();
+    deleteUserId();
+    router.replace("/");
   };
 
   const { deleteUser } = useUserStore();
@@ -130,7 +154,7 @@ const ProfileMenu = (props: Props) => {
               <Text style={styles.buttonText}>Terms of Service</Text>
               <Icon name="chevron-right" size={35} color={Colors.grey} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <TouchableOpacity style={styles.button} onPress={handlePrivacyPolicyPress}>
               <Icon
                 name="book-open-blank-variant"
                 size={35}
@@ -143,16 +167,10 @@ const ProfileMenu = (props: Props) => {
           </View>
         </View>
 
+        {/* --- Dark Mode Switch --- */}
+
         {/* --- Sign Out --- */}
-        <TouchableOpacity
-          style={styles.signout}
-          onPress={async () => {
-            deleteUser();
-            deleteToken();
-            deleteUserId();
-            router.replace("/");
-          }}
-        >
+        <TouchableOpacity style={styles.signout} onPress={handleSignOutPress}>
           <Text
             style={{
               fontFamily: "Syne_400Regular",
@@ -166,11 +184,11 @@ const ProfileMenu = (props: Props) => {
         </TouchableOpacity>
       </View>
 
-      {showSheet && (
-        <TermsAndConditions
-          ref={termsSheetRef} // 👈 Pass the ref to control the sheet
-          onClose={closeTermsSheet} // 👈 Pass the cleanup function
-        />
+      {showTermsSheet && (
+        <TermsAndConditions ref={termsSheetRef} onClose={closeTermsSheet} />
+      )}
+      {showPrivacyPolicySheet && (
+        <PrivacyPolicy ref={termsSheetRef} onClose={closePrivacyPolicySheet} />
       )}
     </GestureHandlerRootView>
   );
