@@ -25,6 +25,12 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
+  main: '#624ff0',
+  darkGrey: '#5b5b5b',
+  grey: '#a5a5a5',
+  lightGrey: '#e6e6e6',
+  errorPink: '#fcd0c9',
+  errorRed: '#ff0000'
 };
 
 export const Fonts = Platform.select({
